@@ -1,0 +1,73 @@
+import winston from "winston";
+import { basename, join } from "path";
+import { existsSync, mkdirSync } from "fs";
+import WinstonDaily from "winston-daily-rotate-file";
+import { LOG_DIR } from "./env.config";
+
+const logDir = join(process.cwd(), LOG_DIR);
+
+if (!existsSync(logDir)) {
+  mkdirSync(logDir);
+}
+
+const fileLogFormat = winston.format.combine(
+  winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+  winston.format.label({
+    label: basename(require?.main?.filename || "server"),
+  }),
+  winston.format.metadata({
+    fillExcept: ["message", "level", "timestamp", "label"],
+  }),
+  winston.format.json()
+);
+
+export const consoleLogFormat = winston.format.combine(
+  winston.format.splat(),
+  winston.format.colorize(),
+  winston.format.printf(({ timestamp, level, message, label }) => {
+    return `${timestamp} ${level} [${label}]: ${message}`;
+  })
+);
+
+export const logger = winston.createLogger({
+  format: fileLogFormat,
+  transports: [
+    new WinstonDaily({
+      level: "debug",
+      datePattern: "YYYY-MM-DD",
+      dirname: `${logDir}/debug`,
+      filename: "%DATE%.log",
+      maxFiles: 30,
+      json: false,
+      zippedArchive: true,
+    }),
+    new WinstonDaily({
+      level: "error",
+      datePattern: "YYYY-MM-DD",
+      dirname: `${logDir}/error`,
+      filename: "%DATE%.log",
+      maxFiles: 30,
+      handleExceptions: true,
+      json: false,
+      zippedArchive: true,
+    }),
+  ],
+});
+
+logger.add(
+  new winston.transports.Console({
+    format: consoleLogFormat,
+  })
+);
+
+export const stream = {
+  write: (message: string) => {
+    logger.info(message.substring(0, message.lastIndexOf("\n")));
+  },
+};
+
+export const configData = Object.freeze({
+  defaultTimer: 300000,
+  atLeastTimer: 120000,
+  default_undo_time: 20000,
+});

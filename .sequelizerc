@@ -1,0 +1,11 @@
+"use strict";
+
+const path = require("path");
+
+module.exports = {
+  config: path.resolve(path.join(process.cwd(), "src/database"), "config.js"),
+  "migrations-path": path.resolve(
+    path.join(process.cwd(), "src/database"),
+    "migrations"
+  ),
+};
