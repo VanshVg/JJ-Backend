@@ -49,7 +49,8 @@ LOG_DIR=
 
 ---
 ## Database Design
-![image](https://github.com/user-attachments/assets/5858d37d-9d50-4a78-a385-1ac0980bce62)
+![JJ_DB](https://github.com/user-attachments/assets/dfa81e07-a0b7-4404-9e97-b4aa41baa034)
+
 
 ---
 ## Contact
