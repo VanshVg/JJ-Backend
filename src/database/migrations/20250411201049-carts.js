@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable(
-        "user_otps",
+        "carts",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -22,18 +22,6 @@ module.exports = {
             },
             onDelete: "CASCADE",
           },
-          otp: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            validate: {
-              min: 10000,
-              max: 999999,
-            },
-          },
-          expiry_date: {
-            type: Sequelize.DATE,
-            allowNull: false,
-          },
 
           created_at: {
             type: Sequelize.DATE,
@@ -41,11 +29,12 @@ module.exports = {
             defaultValue: Sequelize.NOW,
           },
           updated_at: { type: Sequelize.DATE, allowNull: false },
+          deleted_at: { type: Sequelize.DATE },
         },
         { transaction: t }
       );
 
-      await queryInterface.addIndex("user_otps", {
+      await queryInterface.addIndex("carts", {
         fields: ["user_id"],
         unique: true,
         transaction: t,
@@ -55,7 +44,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("user_otps", {
+      await queryInterface.dropTable("carts", {
         transaction: t,
         cascade: true,
       });

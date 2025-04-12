@@ -30,6 +30,11 @@ module.exports = {
             },
             onDelete: "CASCADE",
           },
+          SKU: {
+            type: Sequelize.TEXT,
+            allowNull: false,
+            unique: true,
+          },
           weight: {
             type: Sequelize.DECIMAL,
             allowNull: false,
@@ -90,6 +95,10 @@ module.exports = {
       });
       await queryInterface.addIndex("products", {
         fields: ["category_id"],
+        transaction: t,
+      });
+      await queryInterface.addIndex("products", {
+        fields: ["SKU"],
         transaction: t,
       });
     });

@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable(
-        "user_otps",
+        "orders",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -22,16 +22,45 @@ module.exports = {
             },
             onDelete: "CASCADE",
           },
-          otp: {
-            type: Sequelize.INTEGER,
+          status: {
+            type: Sequelize.ENUM(
+              "ordered",
+              "shipped",
+              "cancelled",
+              "completed"
+            ),
             allowNull: false,
-            validate: {
-              min: 10000,
-              max: 999999,
-            },
+            defaultValue: "ordered",
           },
-          expiry_date: {
-            type: Sequelize.DATE,
+          address_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+              model: "user_addresses",
+              key: "id",
+            },
+            onDelete: "CASCADE",
+          },
+          total_tax: {
+            type: Sequelize.DECIMAL,
+            allowNull: false,
+          },
+          discount_amount: {
+            type: Sequelize.DECIMAL,
+            allowNull: true,
+          },
+          is_gift_points_used: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          },
+          final_amount: {
+            type: Sequelize.DECIMAL,
+            allowNull: false,
+          },
+          tracking_id: {
+            type: Sequelize.TEXT,
+            unique: true,
             allowNull: false,
           },
 
@@ -41,13 +70,13 @@ module.exports = {
             defaultValue: Sequelize.NOW,
           },
           updated_at: { type: Sequelize.DATE, allowNull: false },
+          deleted_at: { type: Sequelize.DATE },
         },
         { transaction: t }
       );
 
-      await queryInterface.addIndex("user_otps", {
+      await queryInterface.addIndex("orders", {
         fields: ["user_id"],
-        unique: true,
         transaction: t,
       });
     });
@@ -55,7 +84,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("user_otps", {
+      await queryInterface.dropTable("orders", {
         transaction: t,
         cascade: true,
       });

@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable(
-        "user_otps",
+        "cart_products",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -13,26 +13,28 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true,
           },
-          user_id: {
+          cart_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
-              model: "users",
+              model: "carts",
               key: "id",
             },
             onDelete: "CASCADE",
           },
-          otp: {
+          product_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            validate: {
-              min: 10000,
-              max: 999999,
+            references: {
+              model: "products",
+              key: "id",
             },
+            onDelete: "CASCADE",
           },
-          expiry_date: {
-            type: Sequelize.DATE,
+          quantity: {
+            type: Sequelize.INTEGER,
             allowNull: false,
+            defaultValue: 1,
           },
 
           created_at: {
@@ -41,13 +43,13 @@ module.exports = {
             defaultValue: Sequelize.NOW,
           },
           updated_at: { type: Sequelize.DATE, allowNull: false },
+          deleted_at: { type: Sequelize.DATE },
         },
         { transaction: t }
       );
 
-      await queryInterface.addIndex("user_otps", {
-        fields: ["user_id"],
-        unique: true,
+      await queryInterface.addIndex("cart_products", {
+        fields: ["cart_id"],
         transaction: t,
       });
     });
@@ -55,7 +57,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("user_otps", {
+      await queryInterface.dropTable("cart_products", {
         transaction: t,
         cascade: true,
       });
