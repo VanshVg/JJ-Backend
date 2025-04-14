@@ -17,7 +17,6 @@ import {
 import { UserAttributes, UserRoles } from "./types/users.type";
 import { DataTypes } from "sequelize";
 import argon2 from "argon2";
-import UserOtp from "./user-otps.model";
 
 @Table({
   tableName: "users",
@@ -41,7 +40,6 @@ class User extends Model<UserAttributes> {
 
   @AllowNull(true)
   @Column(DataTypes.STRING)
-  @IsEmail
   email?: string;
 
   @AllowNull(false)
@@ -83,20 +81,6 @@ class User extends Model<UserAttributes> {
 
   @DeletedAt
   deleted_at: Date;
-
-  @HasOne(() => UserOtp)
-  otp: UserOtp;
-
-  @BeforeCreate
-  @BeforeUpdate
-  static beforeCreateHook = async (user: User) => {
-    if (user?.password && user.changed("password")) {
-      user.password = await argon2.hash(user.password);
-    }
-    if (user?.email && user.changed("email")) {
-      user.email = user.email.trim().toLowerCase();
-    }
-  };
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());

@@ -50,8 +50,7 @@ module.exports = {
           },
           last_login_at: {
             type: Sequelize.STRING,
-            allowNull: false,
-            defaultValue: Sequelize.NOW,
+            allowNull: true,
           },
           reset_pass_token: {
             type: Sequelize.TEXT,
