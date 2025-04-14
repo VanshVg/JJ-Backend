@@ -15,3 +15,8 @@ export const verifyOtpSchema = Joi.object({
   contact_no: joiData.contact_no.required(),
   otp: joiCommon.joiString.label("OTP").length(6).required(),
 });
+
+export const loginSchema = Joi.object({
+  contact_no: joiData.contact_no.required(),
+  password: joiData.password.required(),
+});

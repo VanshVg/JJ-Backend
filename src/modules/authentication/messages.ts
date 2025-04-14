@@ -5,4 +5,7 @@ export const USER_MESSAGES = Object.freeze({
   OTP_SENT: "Please verify the OTP sent to your contact number",
   FAILED_MESSAGE: "Something went wrong while sending otp!",
   INVALID_OTP: "OTP is either wrong or expired",
+  INVALID_CREDENTIALS: "Credentials are incorrect",
+  NOT_ACTIVATED: "User is not activated",
+  LOGIN_SUCCESS: "Login successful",
 });

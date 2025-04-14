@@ -10,4 +10,5 @@ export const {
   TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN,
   TWILIO_SERVICE_SID,
+  JWT_SECRET,
 } = process.env;
