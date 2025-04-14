@@ -22,3 +22,23 @@ export const register = async (
     next(error);
   }
 };
+
+export const verifyOtp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const updatedUser = await authServices.verifyUserOtp(req.body);
+    return generalResponse({
+      response: res,
+      data: updatedUser,
+      message: USER_MESSAGES.REGISTER_SUCCESS,
+      statusCode: 200,
+      toast: true,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};

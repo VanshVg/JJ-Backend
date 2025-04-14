@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { register } from "./controller";
-import { registerSchema } from "./schema";
+import { register, verifyOtp } from "./controller";
+import { registerSchema, verifyOtpSchema } from "./schema";
 import validationMiddleware from "./../../middlewares/validation.middleware";
 
 const authRoutes = (): Router => {
@@ -10,6 +10,11 @@ const authRoutes = (): Router => {
     `/auth/register`,
     validationMiddleware(registerSchema),
     register
+  );
+  authRouter.post(
+    `/auth/verify-otp`,
+    validationMiddleware(verifyOtpSchema),
+    verifyOtp
   );
 
   return authRouter;
