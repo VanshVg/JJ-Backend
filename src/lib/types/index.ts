@@ -7,7 +7,7 @@ export enum ResponseType {
 
 export interface IGeneralResponse {
   response: Response;
-  data: any | null;
+  data?: any | null;
   message: string;
   responseType?: ResponseType;
   toast: boolean;

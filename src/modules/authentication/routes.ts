@@ -1,6 +1,19 @@
 import { Router } from "express";
-import { login, otpVerification, register } from "./controller";
-import { loginSchema, registerSchema, verifyOtpSchema } from "./schema";
+import {
+  forgotPassword,
+  login,
+  otpVerification,
+  register,
+  resendOtp,
+  resetPassword,
+} from "./controller";
+import {
+  forgotPasswordSchema,
+  loginSchema,
+  registerSchema,
+  resetPasswordSchema,
+  verifyOtpSchema,
+} from "./schema";
 import validationMiddleware from "./../../middlewares/validation.middleware";
 
 const authRoutes = (): Router => {
@@ -17,6 +30,17 @@ const authRoutes = (): Router => {
     otpVerification
   );
   authRouter.post(`/auth/login`, validationMiddleware(loginSchema), login);
+  authRouter.post(`/auth/resend-otp`, resendOtp);
+  authRouter.post(
+    `/auth/forgot-password`,
+    validationMiddleware(forgotPasswordSchema),
+    forgotPassword
+  );
+  authRouter.post(
+    `/auth/reset-password`,
+    validationMiddleware(resetPasswordSchema),
+    resetPassword
+  );
 
   return authRouter;
 };

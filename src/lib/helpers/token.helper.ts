@@ -10,3 +10,7 @@ export const generateToken = (data: any, expireTime: number): string => {
     { expiresIn: expireTime }
   );
 };
+
+export const verifyToken = (token: string): any => {
+  return jwt.verify(token, JWT_SECRET as string);
+};

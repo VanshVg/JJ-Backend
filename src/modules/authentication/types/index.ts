@@ -3,7 +3,6 @@ export interface IRegisterBody {
   password: string;
 }
 
-export interface IVerifyOtpBody {
+export interface IForgotUserPasswordBody {
   contact_no: string;
-  otp: string;
 }
