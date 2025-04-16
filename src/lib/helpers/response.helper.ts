@@ -1,13 +1,13 @@
-import { Response } from "express";
+import { IGeneralResponse, ResponseType } from "../types";
 
-export const generalResponse = (
-  response: Response,
-  data: any = null,
-  message = "",
-  responseType = "success",
-  toast = false,
-  statusCode = 200
-) => {
+export const generalResponse = ({
+  response,
+  data = null,
+  message,
+  responseType = ResponseType.Success,
+  toast,
+  statusCode,
+}: IGeneralResponse) => {
   response.status(statusCode).send({
     data,
     message,

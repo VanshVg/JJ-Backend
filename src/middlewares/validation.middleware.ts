@@ -1,4 +1,5 @@
 import { generalResponse } from "@/lib/helpers/response.helper";
+import { ResponseType } from "@/lib/types";
 import { cleanObj } from "@/lib/utils";
 import { RequestHandler } from "express";
 
@@ -30,24 +31,24 @@ const validationMiddleware = (
       if (error.details) {
         const errorResponse = errorFilterValidator(error.details);
 
-        return generalResponse(
-          res,
-          errorResponse,
-          "Something went wrong!",
-          "error",
-          true,
-          422
-        );
+        return generalResponse({
+          response: res,
+          data: errorResponse,
+          message: "Something went wrong!",
+          responseType: ResponseType.Error,
+          toast: true,
+          statusCode: 422,
+        });
       }
 
-      return generalResponse(
-        res,
-        null,
-        "Something went wrong!",
-        "success",
-        true,
-        400
-      );
+      return generalResponse({
+        response: res,
+        data: null,
+        message: "Something went wrong!",
+        responseType: ResponseType.Error,
+        toast: true,
+        statusCode: 400,
+      });
     }
   };
 };
