@@ -25,18 +25,8 @@
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["ES2020", "DOM"],
-    "paths": {
-      "*": ["overWriteTypes/"],
-      "@/*": ["*"],
-      "@lib/*": ["lib/*"],
-      "@modules/*": ["modules/*"],
-      "@config": ["config"],
-      "@common/*": ["common/*"],
-      "@sequelize-dir/*": ["sequelize-dir/*"],
-      "@middlewares/*": ["middlewares/*"]
-    }
+    "lib": ["ES2020", "DOM"]
   },
   "include": ["src/**/*.ts", "src/**/*.json", ".env"],
-  "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
+  "exclude": ["node_modules", "logs", "src/tests"]
 }
