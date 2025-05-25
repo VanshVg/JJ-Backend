@@ -1,14 +1,10 @@
 import {
   AllowNull,
   AutoIncrement,
-  BeforeCreate,
-  BeforeUpdate,
   Column,
   CreatedAt,
   Default,
   DeletedAt,
-  HasOne,
-  IsEmail,
   Model,
   PrimaryKey,
   Table,
@@ -16,7 +12,6 @@ import {
 } from "sequelize-typescript";
 import { UserAttributes, UserRoles } from "./types/users.type";
 import { DataTypes } from "sequelize";
-import argon2 from "argon2";
 
 @Table({
   tableName: "users",
