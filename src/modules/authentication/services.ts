@@ -13,7 +13,7 @@ import { ACCESS_TOKEN_EXPIRE_TIME } from "./types/constants";
 import moment from "moment";
 
 export const registerUser = async (requestBody: IRegisterBody) => {
-  const { contact_no, password } = requestBody;
+  const { contact_no, password, firstname, lastname } = requestBody;
 
   const isUser = await fetchOneUser({
     where: { contact_no },
@@ -41,7 +41,12 @@ export const registerUser = async (requestBody: IRegisterBody) => {
   const hashedPassword = await argon2.hash(password);
 
   const newUser = await createUser(
-    { contact_no, password: hashedPassword },
+    {
+      first_name: firstname,
+      last_name: lastname,
+      contact_no,
+      password: hashedPassword,
+    },
     { raw: true }
   );
 
@@ -76,12 +81,14 @@ export const verifyUserOtp = async (verificationToken: string, otp: string) => {
     });
   }
 
-  const updatedUser = await updateUser(
+  await updateUser(
     { is_contact_no_verified: true },
     { where: { id: isUser.id } }
   );
 
-  return updatedUser;
+  const newToken = generateToken({ contact_no }, ACCESS_TOKEN_EXPIRE_TIME);
+
+  return newToken;
 };
 
 export const loginUser = async (requestBody: IRegisterBody) => {
@@ -89,7 +96,15 @@ export const loginUser = async (requestBody: IRegisterBody) => {
 
   const isUser = await fetchOneUser({
     where: { contact_no },
-    attributes: ["id", "is_contact_no_verified", "role"],
+    attributes: [
+      "id",
+      "is_contact_no_verified",
+      "role",
+      "password",
+      "contact_no",
+      "first_name",
+      "last_name",
+    ],
     raw: true,
   });
   if (!isUser) {
@@ -100,7 +115,7 @@ export const loginUser = async (requestBody: IRegisterBody) => {
     });
   }
 
-  if (isUser.is_contact_no_verified) {
+  if (!isUser.is_contact_no_verified) {
     throwAppError({
       message: USER_MESSAGES.NOT_ACTIVATED,
       statusCode: 403,
@@ -127,7 +142,7 @@ export const loginUser = async (requestBody: IRegisterBody) => {
     { where: { id: isUser.id } }
   );
 
-  return accessToken;
+  return { accessToken, user: isUser };
 };
 
 export const resendUserOtp = async (verificationToken: string) => {
@@ -170,13 +185,13 @@ export const forgotUserPassword = async (
   });
   if (!isUser) {
     throwAppError({
-      message: USER_MESSAGES.INVALID_CREDENTIALS,
+      message: USER_MESSAGES.CONTACT_NO_NOT_EXIST,
       statusCode: 401,
       toast: true,
     });
   }
 
-  if (isUser.is_contact_no_verified) {
+  if (!isUser.is_contact_no_verified) {
     throwAppError({
       message: USER_MESSAGES.NOT_ACTIVATED,
       statusCode: 403,

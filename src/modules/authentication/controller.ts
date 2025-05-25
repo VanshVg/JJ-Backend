@@ -15,7 +15,7 @@ export const register = async (
       data,
       message: USER_MESSAGES.OTP_SENT,
       statusCode: 200,
-      toast: true,
+      toast: false,
     });
   } catch (error) {
     console.log(`Error inside register API`, error);
@@ -29,14 +29,14 @@ export const otpVerification = async (
   next: NextFunction
 ) => {
   try {
-    const updatedUser = await authServices.verifyUserOtp(
+    const newToken = await authServices.verifyUserOtp(
       req.query.verification_token as string,
       req.body.otp
     );
     return generalResponse({
       response: res,
-      data: updatedUser,
-      message: USER_MESSAGES.REGISTER_SUCCESS,
+      data: { accessToken: newToken },
+      message: USER_MESSAGES.CONTACT_VERIFIED,
       statusCode: 200,
       toast: true,
     });
@@ -52,10 +52,10 @@ export const login = async (
   next: NextFunction
 ) => {
   try {
-    const accessToken = await authServices.loginUser(req.body);
+    const data = await authServices.loginUser(req.body);
     return generalResponse({
       response: res,
-      data: accessToken,
+      data,
       message: USER_MESSAGES.LOGIN_SUCCESS,
       statusCode: 200,
       toast: true,
@@ -75,7 +75,7 @@ export const resendOtp = async (
     await authServices.resendUserOtp(req.query.verification_token as string);
     return generalResponse({
       response: res,
-      message: USER_MESSAGES.OTP_RESENT,
+      message: USER_MESSAGES.OTP_SENT,
       statusCode: 200,
       toast: true,
     });
@@ -95,7 +95,7 @@ export const forgotPassword = async (
     return generalResponse({
       response: res,
       data,
-      message: USER_MESSAGES.RESET_PASSWORD_OTP,
+      message: USER_MESSAGES.OTP_SENT,
       statusCode: 200,
       toast: true,
     });
