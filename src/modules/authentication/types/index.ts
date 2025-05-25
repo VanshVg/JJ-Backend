@@ -1,4 +1,6 @@
 export interface IRegisterBody {
+  firstname: string;
+  lastname: string;
   contact_no: string;
   password: string;
 }

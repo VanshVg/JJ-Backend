@@ -22,6 +22,7 @@ const validationMiddleware = (
   value: "body" | "query" | "params" | string = "body"
 ): RequestHandler => {
   return async (req, res, next) => {
+    console.log(req.body);
     try {
       cleanObj(req[value]);
       req[value] = await type.validateAsync(req[value]);
