@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "migrations": "npx sequelize-cli db:migrate"
   },
   "keywords": [],
@@ -40,6 +40,7 @@
     "@types/twilio": "^3.19.3",
     "cross-env": "^7.0.3",
     "nodemon": "^3.1.9",
+    "rimraf": "^6.0.1",
     "sequelize-cli": "^6.6.2",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.10",
