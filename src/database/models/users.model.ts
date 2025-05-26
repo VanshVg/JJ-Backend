@@ -25,13 +25,13 @@ class User extends Model<UserAttributes> {
   @Column(DataTypes.INTEGER)
   id: number;
 
-  @AllowNull(true)
+  @AllowNull(false)
   @Column(DataTypes.STRING)
-  first_name?: string;
+  first_name: string;
 
-  @AllowNull(true)
+  @AllowNull(false)
   @Column(DataTypes.STRING)
-  last_name?: string;
+  last_name: string;
 
   @AllowNull(true)
   @Column(DataTypes.STRING)

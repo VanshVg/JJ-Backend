@@ -7,8 +7,8 @@ export enum UserRoles {
 
 export interface UserAttributes extends TimeStampAttributes {
   id: number;
-  first_name?: string;
-  last_name?: string;
+  first_name: string;
+  last_name: string;
   email?: string;
   contact_no: string;
   password: string;
