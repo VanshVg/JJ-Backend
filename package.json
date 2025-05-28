@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && tsc && npx tsc-alias",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node src/server.ts",
     "migrations": "npx sequelize-cli db:migrate"
   },
   "keywords": [],
