@@ -52,7 +52,7 @@ class Product extends Model<ProductAttributes> {
 
   @AllowNull(false)
   @Column(DataTypes.ENUM(...Object.values(WeightUnits)))
-  weight_units: WeightUnits;
+  weight_unit: WeightUnits;
 
   @AllowNull(false)
   @Column(DataTypes.DECIMAL)

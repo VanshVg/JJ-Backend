@@ -4,6 +4,7 @@ import {
   Column,
   CreatedAt,
   DeletedAt,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -11,6 +12,7 @@ import {
 } from "sequelize-typescript";
 import { CategoryAttributes } from "./types/categories.type";
 import { DataTypes } from "sequelize";
+import Product from "./products.model";
 
 @Table({
   tableName: "categories",
@@ -36,6 +38,9 @@ class Category extends Model<CategoryAttributes> {
 
   @DeletedAt
   deleted_at: Date;
+
+  @HasMany(() => Product)
+  products: Product;
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());

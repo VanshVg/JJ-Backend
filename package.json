@@ -6,8 +6,11 @@
   "scripts": {
     "build": "rimraf dist && tsc && npx tsc-alias",
     "start": "node dist/server.js",
-    "dev": "ts-node src/server.ts",
-    "migrations": "npx sequelize-cli db:migrate"
+    "dev": "nodemon src/server.ts",
+    "migrations": "npx sequelize-cli db:migrate",
+    "seed:categories": "ts-node src/database/seeders/category.seeder.ts",
+    "seed:products": "ts-node src/database/seeders/products.seeder.ts",
+    "seeders": "npm run seed:categories && npm run seed:products"
   },
   "keywords": [],
   "author": "",
