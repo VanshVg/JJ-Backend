@@ -54,15 +54,12 @@ class ProductImage extends Model<ProductImagesAttributes> {
   is_secondary: boolean;
 
   @CreatedAt
-  @Column({ field: "created_at" })
   created_at: Date;
 
   @UpdatedAt
-  @Column({ field: "updated_at" })
   updated_at: Date;
 
   @DeletedAt
-  @Column({ field: "deleted_at" })
   deleted_at: Date;
 
   @BelongsTo(() => Product)

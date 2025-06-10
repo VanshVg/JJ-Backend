@@ -69,15 +69,12 @@ class User extends Model<UserAttributes> {
   reset_pass_token: string;
 
   @CreatedAt
-  @Column({ field: "created_at" })
   created_at: Date;
 
   @UpdatedAt
-  @Column({ field: "updated_at" })
   updated_at: Date;
 
   @DeletedAt
-  @Column({ field: "deleted_at" })
   deleted_at: Date;
 
   readonly toJSON = () => {

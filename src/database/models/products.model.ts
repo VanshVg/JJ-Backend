@@ -85,15 +85,12 @@ class Product extends Model<ProductAttributes> {
   extra_note?: string;
 
   @CreatedAt
-  @Column({ field: "created_at" })
   created_at: Date;
 
   @UpdatedAt
-  @Column({ field: "updated_at" })
   updated_at: Date;
 
   @DeletedAt
-  @Column({ field: "deleted_at" })
   deleted_at: Date;
 
   @BelongsTo(() => Category)
