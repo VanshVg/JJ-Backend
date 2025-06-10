@@ -246,3 +246,126 @@ export const productsData = [
     extra_note: "",
   },
 ];
+
+export const productImagesData = [
+  {
+    product_id: 1,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 1,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 2,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 2,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 3,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 3,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 4,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 4,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 5,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 5,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 6,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 6,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 7,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 7,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 8,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 8,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 9,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 9,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+  {
+    product_id: 10,
+    image_url: "./images/test-product-front.png",
+    alt_name: "Front Picture",
+    is_primary: true,
+  },
+  {
+    product_id: 10,
+    image_url: "./images/test-product-back.png",
+    alt_name: "Back Picture",
+    is_secondary: true,
+  },
+];

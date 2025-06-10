@@ -1,4 +1,5 @@
 import Category from "@/database/models/categories.model";
+import ProductImage from "@/database/models/product-images.model";
 import { getPagination } from "@/lib/helpers/pagination.helper";
 import {
   fetchAllProducts,

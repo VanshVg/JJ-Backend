@@ -47,6 +47,14 @@ module.exports = {
             type: Sequelize.DECIMAL,
             allowNull: false,
           },
+          discount: {
+            type: Sequelize.DECIMAL,
+            allowNull: true,
+          },
+          selling_price: {
+            type: Sequelize.DECIMAL,
+            allowNull: false,
+          },
           available_quantity: {
             type: Sequelize.INTEGER,
             allowNull: false,

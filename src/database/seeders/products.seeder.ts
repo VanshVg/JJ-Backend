@@ -8,4 +8,4 @@ const productsSeeder = async () => {
 
 productsSeeder()
   .then(() => logger.info(`Created product data successfully`))
-  .catch((e) => logger.info(`Error while creating product data`));
+  .catch((e) => logger.error(`Error while creating product data`));

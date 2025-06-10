@@ -5,7 +5,7 @@ import authMiddleware from "@/middlewares/auth.middleware";
 const productRoutes = (): Router => {
   const productRouter = Router();
 
-  productRouter.get("/products", authMiddleware, getProducts);
+  productRouter.get("/products", getProducts);
 
   return productRouter;
 };

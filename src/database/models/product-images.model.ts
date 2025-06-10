@@ -1,72 +1,57 @@
 import {
   AllowNull,
   AutoIncrement,
+  BelongsTo,
   Column,
   CreatedAt,
   Default,
   DeletedAt,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
+  Unique,
   UpdatedAt,
 } from "sequelize-typescript";
-import { UserAttributes, UserRoles } from "./types/users.type";
+import { ProductImagesAttributes } from "./types/product-images.type";
 import { DataTypes } from "sequelize";
+import Product from "./products.model";
 
 @Table({
-  tableName: "users",
+  tableName: "product_images",
   timestamps: true,
   paranoid: true,
 })
-class User extends Model<UserAttributes> {
+class ProductImage extends Model<ProductImagesAttributes> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
   @Column(DataTypes.INTEGER)
   id: number;
 
+  @ForeignKey(() => Product)
   @AllowNull(false)
-  @Column(DataTypes.STRING)
-  first_name: string;
+  @Column(DataTypes.INTEGER)
+  product_id: number;
 
+  @Unique
   @AllowNull(false)
   @Column(DataTypes.STRING)
-  last_name: string;
+  image_url: string;
 
   @AllowNull(true)
   @Column(DataTypes.STRING)
-  email?: string;
-
-  @AllowNull(false)
-  @Column(DataTypes.STRING)
-  contact_no: string;
-
-  @AllowNull(false)
-  @Column(DataTypes.STRING)
-  password?: string;
+  alt_name: string;
 
   @AllowNull(false)
   @Default(false)
   @Column(DataTypes.BOOLEAN)
-  is_contact_no_verified?: boolean;
+  is_primary: boolean;
 
   @AllowNull(false)
   @Default(false)
   @Column(DataTypes.BOOLEAN)
-  is_email_verified?: boolean;
-
-  @AllowNull(false)
-  @Default(UserRoles.Customer)
-  @Column(DataTypes.ENUM(...Object.values(UserRoles)))
-  role: UserRoles;
-
-  @AllowNull(true)
-  @Column(DataTypes.DATE)
-  last_login_at: Date;
-
-  @AllowNull(true)
-  @Column(DataTypes.STRING)
-  reset_pass_token: string;
+  is_secondary: boolean;
 
   @CreatedAt
   @Column({ field: "created_at" })
@@ -80,10 +65,13 @@ class User extends Model<UserAttributes> {
   @Column({ field: "deleted_at" })
   deleted_at: Date;
 
+  @BelongsTo(() => Product)
+  product: Product;
+
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
     return values;
   };
 }
 
-export default User;
+export default ProductImage;

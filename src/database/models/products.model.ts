@@ -6,6 +6,7 @@ import {
   CreatedAt,
   DeletedAt,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -15,6 +16,7 @@ import {
 import { DataTypes } from "sequelize";
 import { ProductAttributes, WeightUnits } from "./types/products.type";
 import Category from "./categories.model";
+import ProductImage from "./product-images.model";
 
 @Table({
   tableName: "products",
@@ -83,16 +85,22 @@ class Product extends Model<ProductAttributes> {
   extra_note?: string;
 
   @CreatedAt
+  @Column({ field: "created_at" })
   created_at: Date;
 
   @UpdatedAt
+  @Column({ field: "updated_at" })
   updated_at: Date;
 
   @DeletedAt
+  @Column({ field: "deleted_at" })
   deleted_at: Date;
 
   @BelongsTo(() => Category)
   category: Category;
+
+  @HasMany(() => ProductImage)
+  productImages: ProductImage;
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
