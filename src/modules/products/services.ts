@@ -40,13 +40,13 @@ export const getProductsService = async (req: Request) => {
 
   let includeCategory: any = {
     model: Category,
-    attributes: ["category"],
+    attributes: ["name"],
   };
 
   if (category) {
     const filteredCategories = String(category).split(",");
     includeCategory.where = {
-      category: {
+      name: {
         [Op.in]: filteredCategories,
       },
     };
@@ -57,7 +57,7 @@ export const getProductsService = async (req: Request) => {
   const { rows: products, count: totalRecords } =
     await fetchAndCountAllProducts({
       where: whereCondition,
-      attributes: ["name", "MRP", "available_quantity", "created_at"],
+      attributes: ["id", "name", "MRP", "available_quantity", "created_at"],
       order: [
         [sortField, sortDirection],
         ["id", "ASC"],

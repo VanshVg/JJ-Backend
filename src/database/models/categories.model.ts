@@ -28,7 +28,7 @@ class Category extends Model<CategoryAttributes> {
 
   @AllowNull(false)
   @Column(DataTypes.STRING)
-  category: string;
+  name: string;
 
   @CreatedAt
   created_at: Date;

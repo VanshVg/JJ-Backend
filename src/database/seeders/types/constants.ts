@@ -3,19 +3,19 @@ import moment from "moment";
 
 export const categoryData = [
   {
-    category: "Rice",
+    name: "Rice",
   },
   {
-    category: "Wheat",
+    name: "Wheat",
   },
   {
-    category: "Besan",
+    name: "Besan",
   },
   {
-    category: "Maida",
+    name: "Maida",
   },
   {
-    category: "Others",
+    name: "Others",
   },
 ];
 
