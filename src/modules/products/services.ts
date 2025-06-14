@@ -57,7 +57,15 @@ export const getProductsService = async (req: Request) => {
   const { rows: products, count: totalRecords } =
     await fetchAndCountAllProducts({
       where: whereCondition,
-      attributes: ["id", "name", "MRP", "available_quantity", "created_at"],
+      attributes: [
+        "id",
+        "name",
+        "discount",
+        "selling_price",
+        "MRP",
+        "available_quantity",
+        "created_at",
+      ],
       order: [
         [sortField, sortDirection],
         ["id", "ASC"],

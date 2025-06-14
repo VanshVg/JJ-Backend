@@ -61,6 +61,14 @@ class Product extends Model<ProductAttributes> {
   MRP: number;
 
   @AllowNull(false)
+  @Column(DataTypes.DECIMAL)
+  discount: number;
+
+  @AllowNull(false)
+  @Column(DataTypes.DECIMAL)
+  selling_price: number;
+
+  @AllowNull(false)
   @Column(DataTypes.INTEGER)
   available_quantity: number;
 
