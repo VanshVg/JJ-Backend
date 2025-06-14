@@ -8,4 +8,4 @@ const productImagesSeeder = async () => {
 
 productImagesSeeder()
   .then(() => logger.info(`Created product images data successfully`))
-  .catch((e) => logger.error(`Error while creating product images data`));
+  .catch((e) => logger.error(`Error while creating product images data` + e));

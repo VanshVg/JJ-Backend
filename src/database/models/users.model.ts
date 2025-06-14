@@ -5,6 +5,7 @@ import {
   CreatedAt,
   Default,
   DeletedAt,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -12,6 +13,7 @@ import {
 } from "sequelize-typescript";
 import { UserAttributes, UserRoles } from "./types/users.type";
 import { DataTypes } from "sequelize";
+import ProductReview from "./product-reviews.model";
 
 @Table({
   tableName: "users",
@@ -76,6 +78,9 @@ class User extends Model<UserAttributes> {
 
   @DeletedAt
   deleted_at: Date;
+
+  @HasMany(() => ProductReview)
+  productReviews: ProductReview[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());

@@ -11,7 +11,8 @@
     "seed:categories": "ts-node src/database/seeders/category.seeder.ts",
     "seed:products": "ts-node src/database/seeders/products.seeder.ts",
     "seed:product-images": "ts-node src/database/seeders/product-images.seeder.ts",
-    "seeders": "npm run seed:categories && npm run seed:products && npm run seed:product-images"
+    "seed:product-reviews": "ts-node src/database/seeders/product-reviews.seeder.ts",
+    "seeders": "npm run seed:categories && npm run seed:products && npm run seed:product-images && npm run seed:product-reviews"
   },
   "keywords": [],
   "author": "",

@@ -34,6 +34,8 @@ export const productsData = [
     expiry_date: moment().add(6, "months").toDate(),
     description: "Premium aged Basmati rice with long grains.",
     extra_note: "Store in a dry place.",
+    discount: 10,
+    selling_price: 522.0,
   },
   {
     name: "Wheat Flour 10kg",
@@ -49,6 +51,8 @@ export const productsData = [
     expiry_date: moment().add(4, "months").toDate(),
     description: "Whole wheat chakki atta for soft rotis.",
     extra_note: "",
+    discount: 5,
+    selling_price: 380.0,
   },
   {
     name: "Besan (Gram Flour) 1kg",
@@ -64,6 +68,8 @@ export const productsData = [
     expiry_date: moment().add(3, "months").toDate(),
     description: "Fine quality besan for cooking and sweets.",
     extra_note: "",
+    discount: 0,
+    selling_price: 85.0,
   },
   {
     name: "Maida 1kg",
@@ -79,6 +85,8 @@ export const productsData = [
     expiry_date: moment().add(2, "months").toDate(),
     description: "Refined flour ideal for baking and frying.",
     extra_note: "",
+    discount: 5,
+    selling_price: 57.0,
   },
   {
     name: "Multigrain Atta 5kg",
@@ -94,6 +102,8 @@ export const productsData = [
     expiry_date: moment().add(5, "months").toDate(),
     description: "Blend of 6 grains for healthier rotis.",
     extra_note: "Good for diabetic diet.",
+    discount: 0,
+    selling_price: 320.0,
   },
   {
     name: "Brown Rice 5kg",
@@ -109,6 +119,8 @@ export const productsData = [
     expiry_date: moment().add(5, "months").toDate(),
     description: "Healthy brown rice rich in fiber.",
     extra_note: "",
+    discount: 7,
+    selling_price: 418.5,
   },
   {
     name: "Sooji (Rava) 1kg",
@@ -124,6 +136,8 @@ export const productsData = [
     expiry_date: moment().add(4, "months").toDate(),
     description: "Fine semolina for upma and halwa.",
     extra_note: "",
+    discount: 0,
+    selling_price: 40.0,
   },
   {
     name: "Wheat Flour 5kg",
@@ -139,6 +153,8 @@ export const productsData = [
     expiry_date: moment().add(4, "months").toDate(),
     description: "Stone-ground wheat atta.",
     extra_note: "",
+    discount: 5,
+    selling_price: 190.0,
   },
   {
     name: "Organic Basmati Rice 1kg",
@@ -154,6 +170,8 @@ export const productsData = [
     expiry_date: moment().add(6, "months").toDate(),
     description: "Certified organic long-grain basmati rice.",
     extra_note: "No preservatives.",
+    discount: 10,
+    selling_price: 117.0,
   },
   {
     name: "Besan 500g",
@@ -169,6 +187,8 @@ export const productsData = [
     expiry_date: moment().add(3, "months").toDate(),
     description: "High protein gram flour.",
     extra_note: "",
+    discount: 0,
+    selling_price: 50.0,
   },
   {
     name: "Wheat Dalia 500g",
@@ -184,6 +204,8 @@ export const productsData = [
     expiry_date: moment().add(5, "months").toDate(),
     description: "Cracked wheat perfect for porridge.",
     extra_note: "",
+    discount: 5,
+    selling_price: 38.0,
   },
   {
     name: "Maida 500g",
@@ -199,6 +221,8 @@ export const productsData = [
     expiry_date: moment().add(2, "months").toDate(),
     description: "Refined flour for parathas & snacks.",
     extra_note: "",
+    discount: 0,
+    selling_price: 30.0,
   },
   {
     name: "Brown Rice 1kg",
@@ -214,6 +238,8 @@ export const productsData = [
     expiry_date: moment().add(5, "months").toDate(),
     description: "Unpolished brown rice for health-conscious diet.",
     extra_note: "",
+    discount: 8,
+    selling_price: 82.8,
   },
   {
     name: "Wheat Flour 2kg",
@@ -229,6 +255,8 @@ export const productsData = [
     expiry_date: moment().add(4, "months").toDate(),
     description: "Organic whole wheat flour.",
     extra_note: "Certified organic",
+    discount: 5,
+    selling_price: 104.5,
   },
   {
     name: "Multigrain Atta 1kg",
@@ -244,6 +272,8 @@ export const productsData = [
     expiry_date: moment().add(5, "months").toDate(),
     description: "A wholesome blend of grains for daily health.",
     extra_note: "",
+    discount: 0,
+    selling_price: 75.0,
   },
 ];
 
@@ -367,5 +397,48 @@ export const productImagesData = [
     image_url: "./images/test-product-back.png",
     alt_name: "Back Picture",
     is_secondary: true,
+  },
+];
+
+export const productReviewsData = [
+  {
+    product_id: 1,
+    rating: 4.25,
+    review: "Great Product",
+  },
+  {
+    product_id: 2,
+    rating: 4.5,
+    review: "Amazing Product",
+  },
+  {
+    product_id: 3,
+    rating: 3,
+    review: "Decent Product",
+  },
+  {
+    product_id: 4,
+    rating: 5,
+    review: "Best Product",
+  },
+  {
+    product_id: 5,
+    rating: 4.25,
+    review: "Great Product",
+  },
+  {
+    product_id: 6,
+    rating: 2,
+    review: "Not that good",
+  },
+  {
+    product_id: 7,
+    rating: 4,
+    review: "Great value for money",
+  },
+  {
+    product_id: 8,
+    rating: 4.25,
+    review: "Great Product",
   },
 ];

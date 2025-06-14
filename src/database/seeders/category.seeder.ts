@@ -8,4 +8,4 @@ const categorySeeder = async () => {
 
 categorySeeder()
   .then(() => logger.info(`Created category data successfully`))
-  .catch((e) => logger.error(`Error while creating category data`));
+  .catch((e) => logger.error(`Error while creating category data` + e));

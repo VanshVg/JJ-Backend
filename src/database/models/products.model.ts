@@ -17,6 +17,7 @@ import { DataTypes } from "sequelize";
 import { ProductAttributes, WeightUnits } from "./types/products.type";
 import Category from "./categories.model";
 import ProductImage from "./product-images.model";
+import ProductReview from "./product-reviews.model";
 
 @Table({
   tableName: "products",
@@ -106,6 +107,9 @@ class Product extends Model<ProductAttributes> {
 
   @HasMany(() => ProductImage)
   productImages: ProductImage;
+
+  @HasMany(() => ProductReview)
+  productReviews: ProductReview[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
