@@ -1,5 +1,6 @@
 import Category from "@/database/models/categories.model";
 import ProductImage from "@/database/models/product-images.model";
+import ProductReview from "@/database/models/product-reviews.model";
 import { getPagination } from "@/lib/helpers/pagination.helper";
 import {
   fetchAllProducts,
@@ -64,6 +65,7 @@ export const getProductsService = async (req: Request) => {
         "selling_price",
         "MRP",
         "available_quantity",
+        "average_rating",
         "created_at",
       ],
       order: [
@@ -77,6 +79,9 @@ export const getProductsService = async (req: Request) => {
         {
           model: ProductImage,
           attributes: ["image_url", "is_primary", "is_secondary"],
+          where: {
+            [Op.or]: [{ is_primary: true }, { is_secondary: true }],
+          },
         },
       ],
     });

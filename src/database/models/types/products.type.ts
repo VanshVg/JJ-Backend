@@ -19,6 +19,7 @@ export interface ProductAttributes extends TimeStampAttributes {
   sold_quantity: number;
   packaging_date: Date;
   expiry_date: Date;
+  average_rating?: number;
   description?: string;
   extra_note?: string;
 }

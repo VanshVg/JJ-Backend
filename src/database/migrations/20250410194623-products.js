@@ -73,6 +73,10 @@ module.exports = {
             type: Sequelize.DATE,
             allowNull: false,
           },
+          average_rating: {
+            type: Sequelize.DECIMAL,
+            allowNull: true,
+          },
           description: {
             type: Sequelize.TEXT,
             allowNull: true,

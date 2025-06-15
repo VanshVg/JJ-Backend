@@ -86,6 +86,10 @@ class Product extends Model<ProductAttributes> {
   expiry_date: Date;
 
   @AllowNull(true)
+  @Column(DataTypes.DECIMAL)
+  average_rating?: number;
+
+  @AllowNull(true)
   @Column(DataTypes.TEXT)
   description?: string;
 
