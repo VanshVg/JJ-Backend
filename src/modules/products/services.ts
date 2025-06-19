@@ -1,11 +1,7 @@
 import Category from "@/database/models/categories.model";
 import ProductImage from "@/database/models/product-images.model";
-import ProductReview from "@/database/models/product-reviews.model";
 import { getPagination } from "@/lib/helpers/pagination.helper";
-import {
-  fetchAllProducts,
-  fetchAndCountAllProducts,
-} from "@/repositories/products.repository";
+import { fetchAndCountAllProducts } from "@/repositories/products.repository";
 import { Request } from "express";
 import { Op } from "sequelize";
 
@@ -16,7 +12,7 @@ export const getProductsService = async (req: Request) => {
   const { minPrice = 1, maxPrice = 10000, category } = req.query;
 
   let whereCondition: any = {
-    MRP: {
+    selling_price: {
       [Op.between]: [+minPrice, +maxPrice],
     },
   };
