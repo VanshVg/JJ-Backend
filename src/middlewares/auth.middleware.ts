@@ -20,7 +20,7 @@ const authMiddleware = async (
       if (!user) {
         return generalResponse({
           response: res,
-          message: USER_MESSAGES.TOKEN_EXPIRED,
+          message: USER_MESSAGES.NOT_AUTHENTICATED,
           statusCode: 401,
           toast: false,
           responseType: ResponseType.Error,

@@ -10,5 +10,5 @@ export const USER_MESSAGES = Object.freeze({
   LOGIN_SUCCESS: "You have logged in successfully",
   OTP_SENT: "OTP sent successfully",
   RESET_PASSWORD_SUCCESS: "Password reset successful",
-  TOKEN_EXPIRED: "Token is expired",
+  NOT_AUTHENTICATED: "You're not authenticated to access this route",
 });

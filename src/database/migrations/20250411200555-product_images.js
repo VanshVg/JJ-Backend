@@ -30,6 +30,16 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: true,
           },
+          is_primary: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            default: false,
+          },
+          is_secondary: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            default: false,
+          },
 
           created_at: {
             type: Sequelize.DATE,
@@ -44,7 +54,6 @@ module.exports = {
 
       await queryInterface.addIndex("product_images", {
         fields: ["product_id"],
-        unique: true,
         transaction: t,
       });
     });
