@@ -98,18 +98,22 @@ module.exports = {
       );
 
       await queryInterface.addIndex("products", {
+        name: "products_name_unique_active",
         fields: ["name"],
         transaction: t,
       });
       await queryInterface.addIndex("products", {
+        name: "products_brand_unique_active",
         fields: ["brand"],
         transaction: t,
       });
       await queryInterface.addIndex("products", {
+        name: "products_category_id_unique_active",
         fields: ["category_id"],
         transaction: t,
       });
       await queryInterface.addIndex("products", {
+        name: "products_sku_unique_active",
         fields: ["SKU"],
         transaction: t,
       });
@@ -122,6 +126,34 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
+      await queryInterface.removeIndex(
+        "products",
+        "products_name_unique_active",
+        {
+          transaction: t,
+        }
+      );
+      await queryInterface.removeIndex(
+        "products",
+        "products_brand_unique_active",
+        {
+          transaction: t,
+        }
+      );
+      await queryInterface.removeIndex(
+        "products",
+        "products_category_id_unique_active",
+        {
+          transaction: t,
+        }
+      );
+      await queryInterface.removeIndex(
+        "products",
+        "products_sku_unique_active",
+        {
+          transaction: t,
+        }
+      );
     });
   },
 };

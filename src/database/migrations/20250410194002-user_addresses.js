@@ -54,6 +54,7 @@ module.exports = {
       );
 
       await queryInterface.addIndex("user_addresses", {
+        name: "user_addresses_user_id_unique_active",
         fields: ["user_id"],
         unique: true,
         transaction: t,
@@ -67,6 +68,13 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
+      await queryInterface.removeIndex(
+        "user_addresses",
+        "user_addresses_user_id_unique_active",
+        {
+          transaction: t,
+        }
+      );
     });
   },
 };

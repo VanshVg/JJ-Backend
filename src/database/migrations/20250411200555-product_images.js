@@ -53,6 +53,7 @@ module.exports = {
       );
 
       await queryInterface.addIndex("product_images", {
+        name: "product_images_product_id_unique_active",
         fields: ["product_id"],
         transaction: t,
       });
@@ -65,6 +66,13 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
+      await queryInterface.removeIndex(
+        "product_images",
+        "product_images_product_id_unique_active",
+        {
+          transaction: t,
+        }
+      );
     });
   },
 };
