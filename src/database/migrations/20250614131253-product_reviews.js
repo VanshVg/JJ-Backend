@@ -53,10 +53,12 @@ module.exports = {
       );
 
       await queryInterface.addIndex("product_reviews", {
+        name: "product_reviews_product_id_unique_active",
         fields: ["product_id"],
         transaction: t,
       });
       await queryInterface.addIndex("product_reviews", {
+        name: "product_reviews_rating_unique_active",
         fields: ["rating"],
         transaction: t,
       });
@@ -69,6 +71,20 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
+      await queryInterface.removeIndex(
+        "product_reviews",
+        "product_reviews_product_id_unique_active",
+        {
+          transaction: t,
+        }
+      );
+      await queryInterface.removeIndex(
+        "product_reviews",
+        "product_reviews_rating_unique_active",
+        {
+          transaction: t,
+        }
+      );
     });
   },
 };

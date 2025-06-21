@@ -29,6 +29,12 @@ module.exports = {
         },
         { transaction: t }
       );
+      await queryInterface.addIndex("categories", {
+        name: "categories_name_unique_active",
+        fields: ["name"],
+        unique: true,
+        transaction: t,
+      });
     });
   },
 
@@ -38,6 +44,13 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
+      await queryInterface.removeIndex(
+        "categories",
+        "categories_name_unique_active",
+        {
+          transaction: t,
+        }
+      );
     });
   },
 };

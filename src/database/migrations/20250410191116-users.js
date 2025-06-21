@@ -69,6 +69,7 @@ module.exports = {
       );
 
       await queryInterface.addIndex("users", {
+        name: "users_contact_no_unique_active",
         fields: ["contact_no"],
         unique: true,
         where: {
@@ -85,6 +86,13 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
+      await queryInterface.removeIndex(
+        "users",
+        "users_contact_no_unique_active",
+        {
+          transaction: t,
+        }
+      );
     });
   },
 };
