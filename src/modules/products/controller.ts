@@ -27,3 +27,24 @@ export const getProducts = async (
     next(error);
   }
 };
+
+export const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const product = await productServices.getProductById(Number(req.params.id));
+
+    return generalResponse({
+      response: res,
+      data: product,
+      message: PRODUCTS_MESSAGES.PRODUCT_DETAILS_SUCCESS,
+      statusCode: 200,
+      toast: false,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
