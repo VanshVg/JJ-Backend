@@ -7,3 +7,5 @@ const ProductReviewRepository = getRepository<ProductReview>(
 
 export const bulkCreateProductReviews = ProductReviewRepository.bulkCreate;
 export const fetchAllProductReviews = ProductReviewRepository.getAll;
+export const fetchOneProductReview = ProductReviewRepository.get;
+export const createProductReview = ProductReviewRepository.create;

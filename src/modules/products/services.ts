@@ -11,6 +11,12 @@ import { Request } from "express";
 import { Op } from "sequelize";
 import { PRODUCTS_MESSAGES } from "./messages";
 import User from "@/database/models/users.model";
+import { fetchOneUser } from "@/repositories/users.repository";
+import {
+  createProductReview,
+  fetchOneProductReview,
+} from "@/repositories/product-reviews.repository";
+import { IAddProductReview } from "./types";
 
 export const getProductsService = async (req: Request) => {
   const { limit, offset, search, sortDirection, sortField } =
@@ -96,6 +102,7 @@ export const getProductById = async (productId: number) => {
   const product = await fetchOneProduct({
     where: { id: productId },
     attributes: [
+      "id",
       "name",
       "brand",
       "weight",
@@ -140,4 +147,39 @@ export const getProductById = async (productId: number) => {
   }
 
   return product;
+};
+
+export const addProductReview = async ({
+  productId,
+  userId,
+  requestBody,
+}: IAddProductReview) => {
+  const { rating, review } = requestBody;
+
+  const product = await fetchOneProduct({ where: { id: productId } });
+  if (!product) {
+    throwAppError({
+      message: PRODUCTS_MESSAGES.PRODUCT_NOT_FOUND,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  const productReview = await fetchOneProductReview({
+    where: { product_id: productId, user_id: userId },
+  });
+  if (productReview) {
+    throwAppError({
+      message: PRODUCTS_MESSAGES.REVIEW_EXIST,
+      statusCode: 409,
+      toast: true,
+    });
+  }
+
+  await createProductReview({
+    rating,
+    review,
+  });
+
+  return null;
 };

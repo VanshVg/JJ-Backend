@@ -48,3 +48,30 @@ export const getProductById = async (
     next(error);
   }
 };
+
+export const addProductReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+
+    await productServices.addProductReview({
+      productId: Number(id),
+      userId,
+      requestBody: req.body,
+    });
+
+    return generalResponse({
+      response: res,
+      message: PRODUCTS_MESSAGES.REVIEW_SUCCESS,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
