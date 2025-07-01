@@ -1,9 +1,22 @@
 import Category from "@/database/models/categories.model";
 import ProductImage from "@/database/models/product-images.model";
+import ProductReview from "@/database/models/product-reviews.model";
+import { throwAppError } from "@/lib/helpers/error.helper";
 import { getPagination } from "@/lib/helpers/pagination.helper";
-import { fetchAndCountAllProducts } from "@/repositories/products.repository";
+import {
+  fetchAndCountAllProducts,
+  fetchOneProduct,
+} from "@/repositories/products.repository";
 import { Request } from "express";
 import { Op } from "sequelize";
+import { PRODUCTS_MESSAGES } from "./messages";
+import User from "@/database/models/users.model";
+import { fetchOneUser } from "@/repositories/users.repository";
+import {
+  createProductReview,
+  fetchOneProductReview,
+} from "@/repositories/product-reviews.repository";
+import { IAddProductReview } from "./types";
 
 export const getProductsService = async (req: Request) => {
   const { limit, offset, search, sortDirection, sortField } =
@@ -83,4 +96,90 @@ export const getProductsService = async (req: Request) => {
     });
 
   return { products, totalRecords };
+};
+
+export const getProductById = async (productId: number) => {
+  const product = await fetchOneProduct({
+    where: { id: productId },
+    attributes: [
+      "id",
+      "name",
+      "brand",
+      "weight",
+      "weight_unit",
+      "MRP",
+      "discount",
+      "selling_price",
+      "available_quantity",
+      "packaging_date",
+      "expiry_date",
+      "average_rating",
+      "description",
+      "extra_note",
+    ],
+    include: [
+      {
+        model: Category,
+        attributes: ["name"],
+      },
+      {
+        model: ProductImage,
+        attributes: ["image_url"],
+      },
+      {
+        model: ProductReview,
+        attributes: ["rating", "review", "created_at"],
+        include: [
+          {
+            model: User,
+            attributes: ["first_name", "last_name"],
+          },
+        ],
+      },
+    ],
+  });
+  if (!product) {
+    throwAppError({
+      message: PRODUCTS_MESSAGES.PRODUCT_NOT_FOUND,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  return product;
+};
+
+export const addProductReview = async ({
+  productId,
+  userId,
+  requestBody,
+}: IAddProductReview) => {
+  const { rating, review } = requestBody;
+
+  const product = await fetchOneProduct({ where: { id: productId } });
+  if (!product) {
+    throwAppError({
+      message: PRODUCTS_MESSAGES.PRODUCT_NOT_FOUND,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  const productReview = await fetchOneProductReview({
+    where: { product_id: productId, user_id: userId },
+  });
+  if (productReview) {
+    throwAppError({
+      message: PRODUCTS_MESSAGES.REVIEW_EXIST,
+      statusCode: 409,
+      toast: true,
+    });
+  }
+
+  await createProductReview({
+    rating,
+    review,
+  });
+
+  return null;
 };

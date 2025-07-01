@@ -27,3 +27,51 @@ export const getProducts = async (
     next(error);
   }
 };
+
+export const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const product = await productServices.getProductById(Number(req.params.id));
+
+    return generalResponse({
+      response: res,
+      data: product,
+      message: PRODUCTS_MESSAGES.PRODUCT_DETAILS_SUCCESS,
+      statusCode: 200,
+      toast: false,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addProductReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+
+    await productServices.addProductReview({
+      productId: Number(id),
+      userId,
+      requestBody: req.body,
+    });
+
+    return generalResponse({
+      response: res,
+      message: PRODUCTS_MESSAGES.REVIEW_SUCCESS,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
