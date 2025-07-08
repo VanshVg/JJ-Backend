@@ -32,7 +32,8 @@ export const productsData = [
     sold_quantity: 120,
     packaging_date: moment().subtract(15, "days").toDate(),
     expiry_date: moment().add(6, "months").toDate(),
-    description: "Premium aged Basmati rice with long grains.",
+    description:
+      "India Gate Basmati Rice is premium-quality long-grain rice that has been aged for superior flavor and texture. Known for its distinct aroma and fluffy texture, it's ideal for biryanis, pulaos, and special occasions. Grown in the fertile lands of the Himalayas, this rice is naturally nutritious and easy to digest.",
     extra_note: "Store in a dry place.",
     discount: 10,
     selling_price: 522.0,
@@ -49,7 +50,8 @@ export const productsData = [
     sold_quantity: 250,
     packaging_date: moment().subtract(20, "days").toDate(),
     expiry_date: moment().add(4, "months").toDate(),
-    description: "Whole wheat chakki atta for soft rotis.",
+    description:
+      "Aashirvaad Whole Wheat Atta is made from the choicest grains, grounded using traditional chakki grinding techniques. It retains the natural goodness of wheat, ensuring soft, fluffy rotis every time. Fortified with essential nutrients, this flour promotes better digestion and overall wellness.",
     extra_note: "",
     discount: 5,
     selling_price: 380.0,
@@ -66,7 +68,8 @@ export const productsData = [
     sold_quantity: 80,
     packaging_date: moment().subtract(10, "days").toDate(),
     expiry_date: moment().add(3, "months").toDate(),
-    description: "Fine quality besan for cooking and sweets.",
+    description:
+      "Fortune Besan is made from the finest quality chana dal, ground to perfection to ensure a smooth and consistent texture. Ideal for preparing savory snacks, sweets, and batters, it’s a protein-rich, gluten-free flour that brings authentic taste to every dish.",
     extra_note: "",
     discount: 0,
     selling_price: 85.0,
@@ -83,7 +86,8 @@ export const productsData = [
     sold_quantity: 50,
     packaging_date: moment().subtract(5, "days").toDate(),
     expiry_date: moment().add(2, "months").toDate(),
-    description: "Refined flour ideal for baking and frying.",
+    description:
+      "Pillsbury Maida is finely refined all-purpose flour, perfect for preparing soft bhaturas, crispy puris, delicious baked goods, and a variety of Indian and Western snacks. It is processed with precision to retain the white color and fine texture.",
     extra_note: "",
     discount: 5,
     selling_price: 57.0,
@@ -100,7 +104,8 @@ export const productsData = [
     sold_quantity: 60,
     packaging_date: moment().subtract(18, "days").toDate(),
     expiry_date: moment().add(5, "months").toDate(),
-    description: "Blend of 6 grains for healthier rotis.",
+    description:
+      "Aashirvaad Multigrain Atta is a health-focused flour blend made with six nutritious grains – wheat, soya, channa, oats, maize, and psyllium husk. Rich in dietary fiber and essential nutrients, it helps manage weight, sugar levels, and digestion, making it ideal for a balanced diet.",
     extra_note: "Good for diabetic diet.",
     discount: 0,
     selling_price: 320.0,
@@ -117,7 +122,8 @@ export const productsData = [
     sold_quantity: 90,
     packaging_date: moment().subtract(12, "days").toDate(),
     expiry_date: moment().add(5, "months").toDate(),
-    description: "Healthy brown rice rich in fiber.",
+    description:
+      "Daawat Brown Rice is a wholesome and fiber-rich alternative to regular white rice. Retaining the nutritious bran layer, it supports better digestion, improved heart health, and aids in weight management. Great for daily meals, salads, and health bowls.",
     extra_note: "",
     discount: 7,
     selling_price: 418.5,
@@ -134,7 +140,8 @@ export const productsData = [
     sold_quantity: 70,
     packaging_date: moment().subtract(7, "days").toDate(),
     expiry_date: moment().add(4, "months").toDate(),
-    description: "Fine semolina for upma and halwa.",
+    description:
+      "Patanjali Sooji is high-quality semolina made from hard wheat. It is perfect for preparing Indian delicacies like upma, halwa, idlis, and dhokla. Easy to digest and naturally nutritious, it is a must-have ingredient in every kitchen.",
     extra_note: "",
     discount: 20,
     selling_price: 52.0,
@@ -151,7 +158,8 @@ export const productsData = [
     sold_quantity: 100,
     packaging_date: moment().subtract(10, "days").toDate(),
     expiry_date: moment().add(4, "months").toDate(),
-    description: "Stone-ground wheat atta.",
+    description:
+      "Patanjali Whole Wheat Atta is stone-ground using traditional methods to preserve nutrients and texture. Made from select grains, it ensures soft and delicious rotis, offering a natural source of energy and essential fiber.",
     extra_note: "",
     discount: 5,
     selling_price: 190.0,
@@ -168,7 +176,8 @@ export const productsData = [
     sold_quantity: 40,
     packaging_date: moment().subtract(25, "days").toDate(),
     expiry_date: moment().add(6, "months").toDate(),
-    description: "Certified organic long-grain basmati rice.",
+    description:
+      "24 Mantra Organic Basmati Rice is grown without the use of synthetic pesticides or fertilizers. With its long, slender grains and distinct aroma, it is perfect for daily meals and special dishes. This rice supports organic farming and a healthy lifestyle.",
     extra_note: "No preservatives.",
     discount: 10,
     selling_price: 117.0,
@@ -185,7 +194,8 @@ export const productsData = [
     sold_quantity: 70,
     packaging_date: moment().subtract(14, "days").toDate(),
     expiry_date: moment().add(3, "months").toDate(),
-    description: "High protein gram flour.",
+    description:
+      "Catch Besan is finely milled from high-quality chana dal. Rich in protein and fiber, it is used in traditional Indian dishes like pakoras, kadhi, and sweets. It’s naturally gluten-free and helps support vegetarian diets with vital nutrients.",
     extra_note: "",
     discount: 30,
     selling_price: 52.5,
@@ -202,7 +212,8 @@ export const productsData = [
     sold_quantity: 30,
     packaging_date: moment().subtract(9, "days").toDate(),
     expiry_date: moment().add(5, "months").toDate(),
-    description: "Cracked wheat perfect for porridge.",
+    description:
+      "Natureland Wheat Dalia is made from 100% whole wheat and is rich in fiber and complex carbohydrates. It is ideal for preparing nutritious porridge, upma, or khichdi, and is known to aid digestion and regulate blood sugar levels.",
     extra_note: "",
     discount: 25,
     selling_price: 54.0,
@@ -219,7 +230,8 @@ export const productsData = [
     sold_quantity: 20,
     packaging_date: moment().subtract(6, "days").toDate(),
     expiry_date: moment().add(2, "months").toDate(),
-    description: "Refined flour for parathas & snacks.",
+    description:
+      "Catch Maida is premium refined flour suitable for baking cakes, making naans, puris, samosas, and other delicious treats. It is finely milled and bleached to maintain whiteness and softness for culinary versatility.",
     extra_note: "",
     discount: 22,
     selling_price: 53.04,
@@ -236,7 +248,8 @@ export const productsData = [
     sold_quantity: 45,
     packaging_date: moment().subtract(8, "days").toDate(),
     expiry_date: moment().add(5, "months").toDate(),
-    description: "Unpolished brown rice for health-conscious diet.",
+    description:
+      "Natureland Brown Rice is unpolished and retains the bran layer, which is rich in fiber and antioxidants. It is a healthy alternative to white rice, ideal for people managing weight, cholesterol, or diabetes. Delicious in salads, curries, and pilafs.",
     extra_note: "",
     discount: 8,
     selling_price: 82.8,
@@ -253,7 +266,8 @@ export const productsData = [
     sold_quantity: 60,
     packaging_date: moment().subtract(5, "days").toDate(),
     expiry_date: moment().add(4, "months").toDate(),
-    description: "Organic whole wheat flour.",
+    description:
+      "24 Mantra Organic Wheat Flour is made from organically grown wheat, free from chemicals and preservatives. It is rich in fiber and nutrients, perfect for making rotis and parathas. A great choice for health-conscious families.",
     extra_note: "Certified organic",
     discount: 5,
     selling_price: 104.5,
@@ -270,7 +284,8 @@ export const productsData = [
     sold_quantity: 55,
     packaging_date: moment().subtract(10, "days").toDate(),
     expiry_date: moment().add(5, "months").toDate(),
-    description: "A wholesome blend of grains for daily health.",
+    description:
+      "Fortune Multigrain Atta is made with a blend of wheat, oats, maize, soya, and barley, offering a rich source of fiber and essential nutrients. It helps in digestion, weight control, and boosts energy levels while delivering the taste of homemade rotis.",
     extra_note: "",
     discount: 0,
     selling_price: 75.0,
