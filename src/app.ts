@@ -6,14 +6,7 @@ import { errorMiddleware } from "./middlewares/error.middleware";
 import { Sequelize } from "sequelize";
 import { logger } from "./config/logger.config";
 import { passportMiddleware } from "./middlewares/passport.middleware";
-import User from "./database/models/users.model";
-import { UserAttributes } from "./database/models/types/users.type";
-
-declare module "express" {
-  interface Request {
-    user: UserAttributes;
-  }
-}
+import "@/lib/types/express";
 
 const port: string | number = PORT || 8000;
 
