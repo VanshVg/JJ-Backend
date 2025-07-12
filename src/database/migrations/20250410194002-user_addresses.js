@@ -27,7 +27,7 @@ module.exports = {
           },
           address_line_2: {
             type: Sequelize.TEXT,
-            allowNull: false,
+            allowNull: true,
           },
           landmark: {
             type: Sequelize.STRING,
@@ -41,7 +41,23 @@ module.exports = {
               max: 999999,
             },
           },
-
+          address_type: {
+            type: Sequelize.ENUM("home", "office", "other"),
+            allowNull: false,
+          },
+          is_primary: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          },
+          longitude: {
+            type: Sequelize.DECIMAL(10, 6),
+            allowNull: false,
+          },
+          latitude: {
+            type: Sequelize.DECIMAL(10, 6),
+            allowNull: false,
+          },
           created_at: {
             type: Sequelize.DATE,
             allowNull: false,
@@ -64,10 +80,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("user_addresses", {
-        transaction: t,
-        cascade: true,
-      });
       await queryInterface.removeIndex(
         "user_addresses",
         "user_addresses_user_id_unique_active",
@@ -75,6 +87,10 @@ module.exports = {
           transaction: t,
         }
       );
+      await queryInterface.dropTable("user_addresses", {
+        transaction: t,
+        cascade: true,
+      });
     });
   },
 };
