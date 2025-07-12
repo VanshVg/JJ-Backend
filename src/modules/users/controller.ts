@@ -24,6 +24,30 @@ export const fetchUserProfile = async (
   }
 };
 
+export const editUserProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const updatedData = await userServices.editUserProfile({
+      bodyData: req.body,
+      userId: req.user.id,
+    });
+
+    return generalResponse({
+      response: res,
+      data: updatedData,
+      message: USERS_MESSAGES.UPDATE_PROFILE_SUCCESS,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const addUserAddress = async (
   req: Request,
   res: Response,

@@ -1,7 +1,7 @@
 import ProductReview from "@/database/models/product-reviews.model";
 import UserAddress from "@/database/models/user-addresses.model";
-import { fetchOneUser } from "@/repositories/users.repository";
-import { IUserAddressBody } from "./types";
+import { fetchOneUser, updateUser } from "@/repositories/users.repository";
+import { IEditProfileBody, IUserAddressBody } from "./types";
 import { createUserAddress } from "@/repositories/user-addresses.repository";
 
 export const fetchUserProfile = async (userId: number) => {
@@ -31,6 +31,21 @@ export const fetchUserProfile = async (userId: number) => {
   });
 
   return userData;
+};
+
+export const editUserProfile = async ({
+  bodyData,
+  userId,
+}: {
+  bodyData: IEditProfileBody;
+  userId: number;
+}) => {
+  const updatedData = await updateUser(
+    { ...bodyData },
+    { where: { id: userId } }
+  );
+
+  return updatedData;
 };
 
 export const addUserAddress = async ({

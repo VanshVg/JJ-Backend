@@ -9,3 +9,8 @@ export interface IUserAddressBody {
   longitude: number;
   latitude: number;
 }
+
+export interface IEditProfileBody {
+  first_name: string;
+  last_name: string;
+}

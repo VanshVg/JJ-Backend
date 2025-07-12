@@ -14,3 +14,8 @@ export const addUserAddressSchema = Joi.object({
   longitude: joiCommon.joiNumber.label("Longitude").required(),
   latitude: joiCommon.joiNumber.label("Latitude").required(),
 });
+
+export const editUserProfileSchema = Joi.object({
+  first_name: joiCommon.joiString.label("First Name"),
+  last_name: joiCommon.joiString.label("Last Name"),
+});
