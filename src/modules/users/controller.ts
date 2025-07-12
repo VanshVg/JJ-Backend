@@ -70,3 +70,27 @@ export const addUserAddress = async (
     next(error);
   }
 };
+
+export const editUserAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const updatedData = await userServices.editUserAddress({
+      bodyData: req.body,
+      userId: req.user.id,
+    });
+
+    return generalResponse({
+      response: res,
+      data: updatedData,
+      message: USERS_MESSAGES.UPDATE_ADDRESS_SUCCESS,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

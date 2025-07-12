@@ -2,11 +2,16 @@ import authMiddleware from "@/middlewares/auth.middleware";
 import { Router } from "express";
 import {
   addUserAddress,
+  editUserAddress,
   editUserProfile,
   fetchUserProfile,
 } from "./controller";
 import validationMiddleware from "@/middlewares/validation.middleware";
-import { addUserAddressSchema, editUserProfileSchema } from "./schema";
+import {
+  addUserAddressSchema,
+  editUserAddressSchema,
+  editUserProfileSchema,
+} from "./schema";
 
 const userRoutes = (): Router => {
   const userRouter = Router();
@@ -23,6 +28,12 @@ const userRoutes = (): Router => {
     authMiddleware,
     validationMiddleware(addUserAddressSchema),
     addUserAddress
+  );
+  userRouter.put(
+    "/users/address",
+    authMiddleware,
+    validationMiddleware(editUserAddressSchema),
+    editUserAddress
   );
 
   return userRouter;
