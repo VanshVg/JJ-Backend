@@ -23,3 +23,26 @@ export const fetchUserProfile = async (
     next(error);
   }
 };
+
+export const addUserAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userData = await userServices.addUserAddress({
+      bodyData: req.body,
+      userId: req.user.id,
+    });
+    return generalResponse({
+      response: res,
+      data: userData,
+      message: USERS_MESSAGES.ADD_ADDRESS_SUCCESS,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
