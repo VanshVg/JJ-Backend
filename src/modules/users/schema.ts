@@ -16,8 +16,9 @@ export const addUserAddressSchema = Joi.object({
 });
 
 export const editUserProfileSchema = Joi.object({
-  first_name: joiCommon.joiString.label("First Name"),
-  last_name: joiCommon.joiString.label("Last Name"),
+  firstname: joiCommon.joiString.label("First Name"),
+  lastname: joiCommon.joiString.label("Last Name"),
+  contact_no: joiCommon.joiString.label("Contact Number"),
 });
 
 export const editUserAddressSchema = Joi.object({

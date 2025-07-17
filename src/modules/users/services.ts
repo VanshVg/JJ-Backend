@@ -48,7 +48,7 @@ export const editUserProfile = async ({
     { where: { id: userId } }
   );
 
-  return updatedData;
+  return updatedData[1];
 };
 
 export const addUserAddress = async ({
