@@ -1,40 +1,12 @@
-import ProductReview from "@/database/models/product-reviews.model";
 import UserAddress from "@/database/models/user-addresses.model";
-import { fetchOneUser, updateUser } from "@/repositories/users.repository";
+import { updateUser } from "@/repositories/users.repository";
 import { IEditProfileBody, IUserAddressBody } from "./types";
 import {
   createUserAddress,
   updateUserAddress,
 } from "@/repositories/user-addresses.repository";
-
-export const fetchUserProfile = async (userId: number) => {
-  const userData = await fetchOneUser({
-    where: { id: userId },
-    attributes: ["id", "first_name", "last_name", "email", "contact_no"],
-    include: [
-      {
-        model: UserAddress,
-        attributes: [
-          "id",
-          "address_line_1",
-          "address_line_2",
-          "landmark",
-          "pincode",
-          "address_type",
-          "is_primary",
-          "longitude",
-          "latitude",
-        ],
-      },
-      {
-        model: ProductReview,
-        attributes: ["id", "user_id", "product_id", "rating", "review"],
-      },
-    ],
-  });
-
-  return userData;
-};
+import { getPagination } from "@/lib/helpers/pagination.helper";
+import { Request } from "express";
 
 export const editUserProfile = async ({
   bodyData,
@@ -48,7 +20,7 @@ export const editUserProfile = async ({
     { where: { id: userId } }
   );
 
-  return updatedData[1];
+  return updatedData;
 };
 
 export const addUserAddress = async ({
@@ -80,4 +52,29 @@ export const editUserAddress = async ({
   );
 
   return updatedData;
+};
+
+export const fetchUserAddress = async (req: Request) => {
+  const { limit, offset } = getPagination(req);
+
+  const { rows: addresses, count: totalRecords } =
+    await UserAddress.findAndCountAll({
+      where: { user_id: req.user.id },
+      attributes: [
+        "id",
+        "address_line_1",
+        "address_line_2",
+        "landmark",
+        "pincode",
+        "address_type",
+        "is_primary",
+        "longitude",
+        "latitude",
+      ],
+      limit,
+      offset,
+      raw: true,
+    });
+
+  return { addresses, totalRecords };
 };

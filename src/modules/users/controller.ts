@@ -4,26 +4,6 @@ import { generalResponse } from "@/lib/helpers/response.helper";
 import { USERS_MESSAGES } from "./messages";
 import { ResponseType } from "@/lib/types";
 
-export const fetchUserProfile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const userData = await userServices.fetchUserProfile(req.user.id);
-    return generalResponse({
-      response: res,
-      data: userData,
-      message: USERS_MESSAGES.PROFILE_SUCCESS,
-      statusCode: 200,
-      toast: false,
-      responseType: ResponseType.Success,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const editUserProfile = async (
   req: Request,
   res: Response,
@@ -86,6 +66,27 @@ export const editUserAddress = async (
       response: res,
       data: updatedData,
       message: USERS_MESSAGES.UPDATE_ADDRESS_SUCCESS,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const fetchUserAddresses = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const responseData = await userServices.fetchUserAddress(req);
+
+    return generalResponse({
+      response: res,
+      data: responseData,
+      message: USERS_MESSAGES.FETCH_ADDRESS_SUCCESS,
       statusCode: 200,
       toast: true,
       responseType: ResponseType.Success,

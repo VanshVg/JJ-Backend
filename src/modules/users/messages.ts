@@ -3,4 +3,5 @@ export const USERS_MESSAGES = Object.freeze({
   ADD_ADDRESS_SUCCESS: "Added address successfully",
   UPDATE_PROFILE_SUCCESS: "User updated successfully",
   UPDATE_ADDRESS_SUCCESS: "Address updated successfully",
+  FETCH_ADDRESS_SUCCESS: "Address fetched successfully",
 });

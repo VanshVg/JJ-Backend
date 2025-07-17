@@ -4,7 +4,7 @@ import {
   addUserAddress,
   editUserAddress,
   editUserProfile,
-  fetchUserProfile,
+  fetchUserAddresses,
 } from "./controller";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import {
@@ -16,7 +16,6 @@ import {
 const userRoutes = (): Router => {
   const userRouter = Router();
 
-  userRouter.get("/users/profile", authMiddleware, fetchUserProfile);
   userRouter.put(
     "/users/profile",
     authMiddleware,
@@ -35,6 +34,7 @@ const userRoutes = (): Router => {
     validationMiddleware(editUserAddressSchema),
     editUserAddress
   );
+  userRouter.get("/users/address", authMiddleware, fetchUserAddresses);
 
   return userRouter;
 };
