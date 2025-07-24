@@ -42,7 +42,7 @@ module.exports = {
             },
           },
           address_type: {
-            type: Sequelize.ENUM("home", "office", "other"),
+            type: Sequelize.ENUM("home", "work", "other"),
             allowNull: false,
           },
           is_primary: {
@@ -69,6 +69,10 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
+      await queryInterface.sequelize.query(
+        'DROP TYPE IF EXISTS "enum_user_addresses_address_type"',
+        { transaction: t }
+      );
     });
   },
 };

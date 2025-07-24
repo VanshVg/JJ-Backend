@@ -2,7 +2,7 @@ import { TimeStampAttributes } from ".";
 
 export enum AddressType {
   Home = "home",
-  Office = "office",
+  Work = "work",
   Other = "other",
 }
 
