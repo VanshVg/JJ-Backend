@@ -10,9 +10,7 @@ export const addUserAddressSchema = Joi.object({
     .label("Address type")
     .allow(...Object.values(AddressType))
     .required(),
-  is_primary: joiCommon.joiBoolean.required(),
-  longitude: joiCommon.joiNumber.label("Longitude").required(),
-  latitude: joiCommon.joiNumber.label("Latitude").required(),
+  pincode: joiCommon.joiNumber.label("Pincode"),
 });
 
 export const editUserProfileSchema = Joi.object({

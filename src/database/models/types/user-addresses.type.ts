@@ -15,6 +15,4 @@ export interface UserAddressAttributes extends TimeStampAttributes {
   pincode: number;
   address_type: AddressType;
   is_primary: boolean;
-  longitude: number;
-  latitude: number;
 }

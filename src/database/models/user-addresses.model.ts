@@ -61,14 +61,6 @@ class UserAddress extends Model<UserAddressAttributes> {
   @Column(DataTypes.BOOLEAN)
   is_primary: boolean;
 
-  @AllowNull(false)
-  @Column(DataTypes.DECIMAL(10, 6))
-  longitude: number;
-
-  @AllowNull(false)
-  @Column(DataTypes.DECIMAL(10, 6))
-  latitude: number;
-
   @CreatedAt
   created_at: Date;
 
