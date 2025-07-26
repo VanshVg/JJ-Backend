@@ -5,7 +5,7 @@ import Joi from "joi";
 export const addUserAddressSchema = Joi.object({
   address_line_1: joiCommon.joiString.label("Address line 1").required(),
   address_line_2: joiCommon.joiString.label("Address line 2"),
-  landmark: joiCommon.joiString.label("Landmark"),
+  landmark: joiCommon.joiString.label("Landmark").allow(null).optional(),
   address_type: joiCommon.joiString
     .label("Address type")
     .allow(...Object.values(AddressType))
@@ -22,11 +22,9 @@ export const editUserProfileSchema = Joi.object({
 export const editUserAddressSchema = Joi.object({
   address_line_1: joiCommon.joiString.label("Address line 1"),
   address_line_2: joiCommon.joiString.label("Address line 2"),
-  landmark: joiCommon.joiString.label("Landmark"),
+  landmark: joiCommon.joiString.label("Landmark").allow(null).optional(),
   address_type: joiCommon.joiString
     .label("Address type")
     .allow(...Object.values(AddressType)),
-  is_primary: joiCommon.joiBoolean.required(),
-  longitude: joiCommon.joiNumber.label("Longitude"),
-  latitude: joiCommon.joiNumber.label("Latitude"),
+  pincode: joiCommon.joiNumber.label("Pincode"),
 });

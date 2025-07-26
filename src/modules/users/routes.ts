@@ -5,6 +5,7 @@ import {
   editUserAddress,
   editUserProfile,
   fetchUserAddresses,
+  removeUserAddress,
 } from "./controller";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import {
@@ -35,6 +36,7 @@ const userRoutes = (): Router => {
     editUserAddress
   );
   userRouter.get("/users/address", authMiddleware, fetchUserAddresses);
+  userRouter.delete("/users/address/:id", authMiddleware, removeUserAddress);
 
   return userRouter;
 };

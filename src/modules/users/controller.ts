@@ -88,6 +88,29 @@ export const fetchUserAddresses = async (
       data: responseData,
       message: USERS_MESSAGES.FETCH_ADDRESS_SUCCESS,
       statusCode: 200,
+      toast: false,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeUserAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const responseData = await userServices.removeUserAddress(
+      Number(req.params.id)
+    );
+
+    return generalResponse({
+      response: res,
+      data: responseData,
+      message: USERS_MESSAGES.ADDRESS_DELETE_SUCCESS,
+      statusCode: 200,
       toast: true,
       responseType: ResponseType.Success,
     });

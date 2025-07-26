@@ -3,10 +3,15 @@ import { updateUser } from "@/repositories/users.repository";
 import { IEditProfileBody, IUserAddressBody } from "./types";
 import {
   createUserAddress,
+  deleteUserAddress,
+  fetchOneUserAddress,
+  findAndCountAllUserAddress,
   updateUserAddress,
 } from "@/repositories/user-addresses.repository";
 import { getPagination } from "@/lib/helpers/pagination.helper";
 import { Request } from "express";
+import { throwAppError } from "@/lib/helpers/error.helper";
+import { USERS_MESSAGES } from "./messages";
 
 export const editUserProfile = async ({
   bodyData,
@@ -58,7 +63,7 @@ export const fetchUserAddress = async (req: Request) => {
   const { limit, offset } = getPagination(req);
 
   const { rows: addresses, count: totalRecords } =
-    await UserAddress.findAndCountAll({
+    await findAndCountAllUserAddress({
       where: { user_id: req.user.id },
       attributes: [
         "id",
@@ -67,9 +72,6 @@ export const fetchUserAddress = async (req: Request) => {
         "landmark",
         "pincode",
         "address_type",
-        "is_primary",
-        "longitude",
-        "latitude",
       ],
       limit,
       offset,
@@ -77,4 +79,19 @@ export const fetchUserAddress = async (req: Request) => {
     });
 
   return { addresses, totalRecords };
+};
+
+export const removeUserAddress = async (addressId: number) => {
+  const isAddress = await fetchOneUserAddress({ where: { id: addressId } });
+  if (!isAddress) {
+    throwAppError({
+      message: USERS_MESSAGES.ADDRESS_NOT_FOUND,
+      statusCode: 404,
+      toast: true,
+    });
+  }
+
+  await deleteUserAddress({ where: { id: addressId } });
+
+  return;
 };

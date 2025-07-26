@@ -6,3 +6,5 @@ const UserAddressRepository = getRepository<UserAddress>(UserAddress.name);
 export const createUserAddress = UserAddressRepository.create;
 export const updateUserAddress = UserAddressRepository.update;
 export const deleteUserAddress = UserAddressRepository.deleteData;
+export const findAndCountAllUserAddress = UserAddressRepository.getAllData;
+export const fetchOneUserAddress = UserAddressRepository.get;
