@@ -1,4 +1,3 @@
-import UserAddress from "@/database/models/user-addresses.model";
 import { updateUser } from "@/repositories/users.repository";
 import { IEditProfileBody, IUserAddressBody } from "./types";
 import {
@@ -12,6 +11,8 @@ import { getPagination } from "@/lib/helpers/pagination.helper";
 import { Request } from "express";
 import { throwAppError } from "@/lib/helpers/error.helper";
 import { USERS_MESSAGES } from "./messages";
+import argon2 from "argon2";
+import User from "@/database/models/users.model";
 
 export const editUserProfile = async ({
   bodyData,
@@ -20,8 +21,10 @@ export const editUserProfile = async ({
   bodyData: IEditProfileBody;
   userId: number;
 }) => {
+  const { firstname, lastname } = bodyData;
+
   const updatedData = await updateUser(
-    { ...bodyData },
+    { first_name: firstname, last_name: lastname },
     { where: { id: userId } }
   );
 
@@ -92,6 +95,39 @@ export const removeUserAddress = async (addressId: number) => {
   }
 
   await deleteUserAddress({ where: { id: addressId } });
+
+  return;
+};
+
+export const changePassword = async ({
+  currentPassword,
+  newPassword,
+  user,
+}: {
+  currentPassword: string;
+  newPassword: string;
+  user: User;
+}) => {
+  const isPassword = await argon2.verify(user.password, currentPassword);
+  if (!isPassword) {
+    throwAppError({
+      message: USERS_MESSAGES.INVALID_PASSWORD,
+      statusCode: 401,
+      toast: true,
+    });
+  }
+
+  if (currentPassword === newPassword) {
+    throwAppError({
+      message: USERS_MESSAGES.PASSWORD_SAME,
+      statusCode: 409,
+      toast: true,
+    });
+  }
+
+  const hashedPassword = await argon2.hash(newPassword);
+
+  await updateUser({ password: hashedPassword }, { where: { id: user.id } });
 
   return;
 };

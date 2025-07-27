@@ -3,6 +3,7 @@ import * as userServices from "./services";
 import { generalResponse } from "@/lib/helpers/response.helper";
 import { USERS_MESSAGES } from "./messages";
 import { ResponseType } from "@/lib/types";
+import User from "@/database/models/users.model";
 
 export const editUserProfile = async (
   req: Request,
@@ -110,6 +111,31 @@ export const removeUserAddress = async (
       response: res,
       data: responseData,
       message: USERS_MESSAGES.ADDRESS_DELETE_SUCCESS,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changePassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await userServices.changePassword({
+      currentPassword: req.body.current_password,
+      newPassword: req.body.new_password,
+      user: req.user as User,
+    });
+
+    return generalResponse({
+      response: res,
+      data: null,
+      message: USERS_MESSAGES.PASSWORD_SUCCESS,
       statusCode: 200,
       toast: true,
       responseType: ResponseType.Success,

@@ -28,3 +28,9 @@ export const editUserAddressSchema = Joi.object({
     .allow(...Object.values(AddressType)),
   pincode: joiCommon.joiNumber.label("Pincode"),
 });
+
+export const changePasswordSchema = Joi.object({
+  current_password: joiCommon.joiString.label("Current Password"),
+  new_password: joiCommon.joiString.label("New Password"),
+  confirm_password: Joi.string().label("Confirm Password"),
+});

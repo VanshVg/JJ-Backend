@@ -6,4 +6,7 @@ export const USERS_MESSAGES = Object.freeze({
   FETCH_ADDRESS_SUCCESS: "Address fetched successfully",
   ADDRESS_NOT_FOUND: "Address not found",
   ADDRESS_DELETE_SUCCESS: "Address deleted successfully",
+  INVALID_PASSWORD: "Current password is invalid",
+  PASSWORD_SUCCESS: "Updated password successfully",
+  PASSWORD_SAME: "Use a different password",
 });

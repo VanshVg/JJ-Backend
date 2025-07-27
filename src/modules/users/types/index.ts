@@ -11,6 +11,6 @@ export interface IUserAddressBody {
 }
 
 export interface IEditProfileBody {
-  first_name: string;
-  last_name: string;
+  firstname: string;
+  lastname: string;
 }

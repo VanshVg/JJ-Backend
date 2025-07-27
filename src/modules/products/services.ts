@@ -11,7 +11,6 @@ import { Request } from "express";
 import { Op } from "sequelize";
 import { PRODUCTS_MESSAGES } from "./messages";
 import User from "@/database/models/users.model";
-import { fetchOneUser } from "@/repositories/users.repository";
 import {
   createProductReview,
   fetchOneProductReview,
