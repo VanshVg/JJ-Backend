@@ -27,7 +27,7 @@ module.exports = {
           },
           address_line_2: {
             type: Sequelize.TEXT,
-            allowNull: false,
+            allowNull: true,
           },
           landmark: {
             type: Sequelize.STRING,
@@ -41,7 +41,15 @@ module.exports = {
               max: 999999,
             },
           },
-
+          address_type: {
+            type: Sequelize.ENUM("home", "work", "other"),
+            allowNull: false,
+          },
+          is_primary: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          },
           created_at: {
             type: Sequelize.DATE,
             allowNull: false,
@@ -52,13 +60,6 @@ module.exports = {
         },
         { transaction: t }
       );
-
-      await queryInterface.addIndex("user_addresses", {
-        name: "user_addresses_user_id_unique_active",
-        fields: ["user_id"],
-        unique: true,
-        transaction: t,
-      });
     });
   },
 
@@ -68,12 +69,9 @@ module.exports = {
         transaction: t,
         cascade: true,
       });
-      await queryInterface.removeIndex(
-        "user_addresses",
-        "user_addresses_user_id_unique_active",
-        {
-          transaction: t,
-        }
+      await queryInterface.sequelize.query(
+        'DROP TYPE IF EXISTS "enum_user_addresses_address_type"',
+        { transaction: t }
       );
     });
   },

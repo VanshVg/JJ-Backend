@@ -122,10 +122,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("products", {
-        transaction: t,
-        cascade: true,
-      });
       await queryInterface.removeIndex(
         "products",
         "products_name_unique_active",
@@ -153,6 +149,14 @@ module.exports = {
         {
           transaction: t,
         }
+      );
+      await queryInterface.dropTable("products", {
+        transaction: t,
+        cascade: true,
+      });
+      await queryInterface.sequelize.query(
+        'DROP TYPE IF EXISTS "enum_products_weight_unit"',
+        { transaction: t }
       );
     });
   },

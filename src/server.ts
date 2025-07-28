@@ -3,11 +3,12 @@ import { logger } from "./config/logger.config";
 import db from "./database/models";
 import authRoutes from "./modules/authentication/routes";
 import productRoutes from "./modules/products/routes";
+import userRoutes from "./modules/users/routes";
 
 const main = async () => {
   try {
     await db.authenticate();
-    const apiRoutes = [authRoutes(), productRoutes()];
+    const apiRoutes = [authRoutes(), productRoutes(), userRoutes()];
 
     await initializeApp(apiRoutes, db);
   } catch (error) {

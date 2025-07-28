@@ -82,16 +82,20 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("users", {
-        transaction: t,
-        cascade: true,
-      });
       await queryInterface.removeIndex(
         "users",
         "users_contact_no_unique_active",
         {
           transaction: t,
         }
+      );
+      await queryInterface.dropTable("users", {
+        transaction: t,
+        cascade: true,
+      });
+      await queryInterface.sequelize.query(
+        'DROP TYPE IF EXISTS "enum_users_role"',
+        { transaction: t }
       );
     });
   },
