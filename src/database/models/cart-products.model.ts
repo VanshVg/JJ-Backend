@@ -11,18 +11,17 @@ import {
   Table,
   UpdatedAt,
 } from "sequelize-typescript";
-import { CartAttributes } from "./types/carts.type";
 import { DataTypes } from "sequelize";
-import User from "./users.model";
 import Cart from "./carts.model";
 import Product from "./products.model";
+import { CartProductsAttributes } from "./types/cart-products.type";
 
 @Table({
   tableName: "cart_products",
   timestamps: true,
   paranoid: true,
 })
-class CartProduct extends Model<CartAttributes> {
+class CartProduct extends Model<CartProductsAttributes> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
