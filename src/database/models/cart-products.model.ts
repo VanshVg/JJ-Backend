@@ -6,7 +6,6 @@ import {
   CreatedAt,
   DeletedAt,
   ForeignKey,
-  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -15,24 +14,34 @@ import {
 import { CartAttributes } from "./types/carts.type";
 import { DataTypes } from "sequelize";
 import User from "./users.model";
-import CartProduct from "./cart-products.model";
+import Cart from "./carts.model";
+import Product from "./products.model";
 
 @Table({
-  tableName: "carts",
+  tableName: "cart_products",
   timestamps: true,
   paranoid: true,
 })
-class Cart extends Model<CartAttributes> {
+class CartProduct extends Model<CartAttributes> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
   @Column(DataTypes.INTEGER)
   id: number;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Cart)
   @AllowNull(false)
   @Column(DataTypes.INTEGER)
-  user_id: number;
+  cart_id: number;
+
+  @ForeignKey(() => Product)
+  @AllowNull(false)
+  @Column(DataTypes.INTEGER)
+  product_id: number;
+
+  @AllowNull(false)
+  @Column(DataTypes.INTEGER)
+  quantity: number;
 
   @CreatedAt
   created_at: Date;
@@ -43,11 +52,11 @@ class Cart extends Model<CartAttributes> {
   @DeletedAt
   deleted_at: Date;
 
-  @BelongsTo(() => User)
-  user: User;
+  @BelongsTo(() => Cart)
+  cart: Cart;
 
-  @HasMany(() => CartProduct)
-  cartProducts: CartProduct[];
+  @BelongsTo(() => Product)
+  product: Product;
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
@@ -55,4 +64,4 @@ class Cart extends Model<CartAttributes> {
   };
 }
 
-export default Cart;
+export default CartProduct;
