@@ -1,6 +1,11 @@
 import authMiddleware from "@/middlewares/auth.middleware";
 import { Router } from "express";
-import { addToCart, fetchCartData, removeFromCart } from "./controller";
+import {
+  addToCart,
+  fetchCartData,
+  mergeCarts,
+  removeFromCart,
+} from "./controller";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import { addToCartSchema } from "./schema";
 
@@ -19,6 +24,7 @@ const cartRoutes = () => {
     authMiddleware,
     removeFromCart
   );
+  cartRouter.post(`/carts/merge`, authMiddleware, mergeCarts);
 
   return cartRouter;
 };

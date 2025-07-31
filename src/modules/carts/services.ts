@@ -1,10 +1,11 @@
 import { fetchOneProduct } from "@/repositories/products.repository";
-import { IAddToCart } from "./types";
+import { IAddToCart, ICartData } from "./types";
 import { throwAppError } from "@/lib/helpers/error.helper";
 import { PRODUCTS_MESSAGES } from "../products/messages";
 import { createCart, fetchOneCart } from "@/repositories/carts.repository";
 import db from "@/database/models";
 import {
+  bulkCreateCartProducts,
   createCartProduct,
   deleteCartProduct,
   fetchAllCartProducts,
@@ -27,7 +28,7 @@ export const addToCart = async ({
 
     const product = await fetchOneProduct({
       where: { id: productId },
-      attributes: ["id"],
+      attributes: ["id", "available_quantity"],
     });
     if (!product) {
       throwAppError({
@@ -53,8 +54,14 @@ export const addToCart = async ({
       transaction,
     });
     if (cartProduct) {
+      const newQuantity = cartProduct.quantity + quantity;
       const updatedData = await updateCartProduct(
-        { quantity: cartProduct.quantity },
+        {
+          quantity:
+            newQuantity <= product.available_quantity
+              ? newQuantity
+              : product.available_quantity,
+        },
         { where: { cart_id: cartId, product_id: productId } }
       );
       await transaction.commit();
@@ -148,4 +155,45 @@ export const removeFromCart = async ({
   });
 
   return;
+};
+
+export const mergeCarts = async (cartData: ICartData[], userId: number) => {
+  const transaction = await db.transaction();
+  try {
+    const userCart = await fetchOneCart({ where: { user_id: userId } });
+    let cartId = userCart?.id;
+    if (!userCart) {
+      const newCart = await createCart({ user_id: userId });
+      cartId = newCart.id;
+    }
+    const bulkData: {
+      product_id: number;
+      quantity: number;
+      cart_id: number;
+    }[] = [];
+    for (const data of cartData) {
+      const cart = await fetchOneCartProduct({
+        where: { product_id: data.productId, cart_id: cartId },
+        attributes: ["id"],
+      });
+      if (cart) {
+        cart.quantity += data.quantity;
+        await cart.save({ transaction });
+      } else {
+        bulkData.push({
+          product_id: data.productId,
+          quantity: data.quantity,
+          cart_id: cartId,
+        });
+      }
+    }
+    if (bulkData.length > 0) {
+      await bulkCreateCartProducts(bulkData, { transaction });
+    }
+    await transaction.commit();
+    return;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };

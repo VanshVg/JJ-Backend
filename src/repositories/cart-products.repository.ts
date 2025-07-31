@@ -8,3 +8,4 @@ export const fetchAllCartProducts = CartProductRepository.getAll;
 export const fetchOneCartProduct = CartProductRepository.get;
 export const updateCartProduct = CartProductRepository.update;
 export const deleteCartProduct = CartProductRepository.deleteData;
+export const bulkCreateCartProducts = CartProductRepository.bulkCreate;

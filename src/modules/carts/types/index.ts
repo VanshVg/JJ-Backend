@@ -3,3 +3,8 @@ export interface IAddToCart {
   productId: number;
   userId: number;
 }
+
+export interface ICartData {
+  productId: number;
+  quantity: number;
+}

@@ -65,3 +65,21 @@ export const removeFromCart = async (
     next(error);
   }
 };
+
+export const mergeCarts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await cartServices.mergeCarts(req.body.cart_data, req.user.id);
+    return generalResponse({
+      response: res,
+      message: CART_MESSAGES.MERGE_SUCCESS,
+      statusCode: 200,
+      toast: false,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
