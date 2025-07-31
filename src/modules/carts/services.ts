@@ -9,6 +9,7 @@ import {
   deleteCartProduct,
   fetchAllCartProducts,
   fetchOneCartProduct,
+  updateCartProduct,
 } from "@/repositories/cart-products.repository";
 import { CART_MESSAGES } from "./messages";
 import Product from "@/database/models/products.model";
@@ -52,9 +53,12 @@ export const addToCart = async ({
       transaction,
     });
     if (cartProduct) {
-      await cartProduct.increment("quantity", { by: quantity, transaction });
+      const updatedData = await updateCartProduct(
+        { quantity: cartProduct.quantity },
+        { where: { cart_id: cartId, product_id: productId } }
+      );
       await transaction.commit();
-      return { ...cartProduct, quantity: cartProduct.quantity + quantity };
+      return { ...updatedData[1][0] };
     }
 
     const newCartProduct = await createCartProduct(
