@@ -100,11 +100,17 @@ export const fetchCartData = async (userId: number) => {
 
   const cartData = await fetchAllCartProducts({
     where: { cart_id: cart.id },
-    attributes: ["id", "cart_id", "product_id", "quantity"],
+    attributes: ["id", "quantity", "is_selected"],
     include: [
       {
         model: Product,
-        attributes: ["id", "name", "brand", "selling_price"],
+        attributes: [
+          "id",
+          "name",
+          "brand",
+          "selling_price",
+          "available_quantity",
+        ],
         include: [
           {
             model: ProductImage,
@@ -196,4 +202,46 @@ export const mergeCarts = async (cartData: ICartData[], userId: number) => {
     await transaction.rollback();
     throw error;
   }
+};
+
+export const updateCart = async (
+  cartProductId: number,
+  cartData: { quantity: number; is_selected: boolean }
+) => {
+  const cartProduct = await fetchOneCartProduct({
+    where: { id: cartProductId },
+    attributes: ["id"],
+  });
+  if (!cartProduct) {
+    throwAppError({
+      message: CART_MESSAGES.PRODUCT_NOT_IN_CART,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+  cartProduct.quantity = cartData.quantity ?? cartProduct.quantity;
+  cartProduct.is_selected = cartData.is_selected ?? cartProduct.is_selected;
+
+  return null;
+};
+
+export const toggleSelection = async (userId: number, toggleType: boolean) => {
+  const cart = await fetchOneCart({
+    where: { user_id: userId },
+    attributes: ["id"],
+  });
+  if (!cart) {
+    throwAppError({
+      message: CART_MESSAGES.CART_NOT_FOUND,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  await updateCartProduct(
+    { is_selected: toggleType },
+    { where: { cart_id: cart.id } }
+  );
+
+  return null;
 };

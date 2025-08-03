@@ -5,4 +5,5 @@ export const CART_MESSAGES = Object.freeze({
   PRODUCT_REMOVE_SUCCESS: "Product removed from cart successfully",
   PRODUCT_NOT_IN_CART: "Product not found in cart",
   MERGE_SUCCESS: "Carts merged successfully",
+  CART_UPDATED_SUCCESS: "Cart updated successfully",
 });

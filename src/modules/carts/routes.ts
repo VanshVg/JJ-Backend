@@ -5,9 +5,15 @@ import {
   fetchCartData,
   mergeCarts,
   removeFromCart,
+  toggleSelection,
+  updateCart,
 } from "./controller";
 import validationMiddleware from "@/middlewares/validation.middleware";
-import { addToCartSchema } from "./schema";
+import {
+  addToCartSchema,
+  toggleSelectionSchema,
+  updateCartSchema,
+} from "./schema";
 
 const cartRoutes = () => {
   const cartRouter = Router();
@@ -25,6 +31,18 @@ const cartRoutes = () => {
     removeFromCart
   );
   cartRouter.post(`/carts/merge`, authMiddleware, mergeCarts);
+  cartRouter.put(
+    `/carts/products/:id`,
+    authMiddleware,
+    validationMiddleware(updateCartSchema),
+    updateCart
+  );
+  cartRouter.put(
+    `/carts/toggle`,
+    authMiddleware,
+    validationMiddleware(toggleSelectionSchema),
+    toggleSelection
+  );
 
   return cartRouter;
 };

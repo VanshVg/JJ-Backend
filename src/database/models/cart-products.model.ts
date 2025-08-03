@@ -4,6 +4,7 @@ import {
   BelongsTo,
   Column,
   CreatedAt,
+  Default,
   DeletedAt,
   ForeignKey,
   Model,
@@ -41,6 +42,11 @@ class CartProduct extends Model<CartProductsAttributes> {
   @AllowNull(false)
   @Column(DataTypes.INTEGER)
   quantity: number;
+
+  @AllowNull(false)
+  @Default(true)
+  @Column(DataTypes.BOOLEAN)
+  is_selected: boolean;
 
   @CreatedAt
   created_at: Date;

@@ -5,4 +5,5 @@ export interface CartProductsAttributes extends TimeStampAttributes {
   cart_id: number;
   product_id: number;
   quantity: number;
+  is_selected: boolean;
 }

@@ -36,6 +36,11 @@ module.exports = {
             allowNull: false,
             defaultValue: 1,
           },
+          is_selected: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
+          },
 
           created_at: {
             type: Sequelize.DATE,

@@ -83,3 +83,39 @@ export const mergeCarts = async (
     next(error);
   }
 };
+
+export const updateCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await cartServices.updateCart(Number(req.params.id), req.body);
+    return generalResponse({
+      response: res,
+      message: CART_MESSAGES.CART_UPDATED_SUCCESS,
+      statusCode: 200,
+      toast: false,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const toggleSelection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await cartServices.toggleSelection(req.user.id, req.body.toggle_type);
+    return generalResponse({
+      response: res,
+      message: CART_MESSAGES.CART_UPDATED_SUCCESS,
+      statusCode: 200,
+      toast: false,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
