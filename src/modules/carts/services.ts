@@ -210,7 +210,7 @@ export const updateCart = async (
 ) => {
   const cartProduct = await fetchOneCartProduct({
     where: { id: cartProductId },
-    attributes: ["id"],
+    attributes: ["id", "quantity", "is_selected"],
   });
   if (!cartProduct) {
     throwAppError({
@@ -219,8 +219,18 @@ export const updateCart = async (
       toast: false,
     });
   }
+
+  console.log(
+    cartData.is_selected ?? cartProduct.is_selected,
+    cartData.is_selected,
+    cartProduct.is_selected,
+    "<<<<<<<<"
+  );
+
   cartProduct.quantity = cartData.quantity ?? cartProduct.quantity;
   cartProduct.is_selected = cartData.is_selected ?? cartProduct.is_selected;
+
+  await cartProduct.save();
 
   return null;
 };
