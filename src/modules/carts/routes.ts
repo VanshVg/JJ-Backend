@@ -26,7 +26,7 @@ const cartRoutes = () => {
   );
   cartRouter.get(`/carts`, authMiddleware, fetchCartData);
   cartRouter.delete(
-    `/carts/products/":productId`,
+    `/carts/products/:productId`,
     authMiddleware,
     removeFromCart
   );

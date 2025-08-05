@@ -220,13 +220,6 @@ export const updateCart = async (
     });
   }
 
-  console.log(
-    cartData.is_selected ?? cartProduct.is_selected,
-    cartData.is_selected,
-    cartProduct.is_selected,
-    "<<<<<<<<"
-  );
-
   cartProduct.quantity = cartData.quantity ?? cartProduct.quantity;
   cartProduct.is_selected = cartData.is_selected ?? cartProduct.is_selected;
 
@@ -248,7 +241,7 @@ export const toggleSelection = async (userId: number, toggleType: boolean) => {
     });
   }
 
-  await updateCartProduct(
+  const abc = await updateCartProduct(
     { is_selected: toggleType },
     { where: { cart_id: cart.id } }
   );

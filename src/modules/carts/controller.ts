@@ -59,7 +59,7 @@ export const removeFromCart = async (
       response: res,
       message: CART_MESSAGES.PRODUCT_REMOVE_SUCCESS,
       statusCode: 200,
-      toast: true,
+      toast: false,
     });
   } catch (error) {
     next(error);
