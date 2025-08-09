@@ -7,4 +7,5 @@ export interface IAddToCart {
 export interface ICartData {
   productId: number;
   quantity: number;
+  is_selected: boolean;
 }

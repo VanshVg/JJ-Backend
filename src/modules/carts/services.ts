@@ -123,7 +123,14 @@ export const fetchCartData = async (userId: number) => {
     order: [["created_at", "DESC"]],
   });
 
-  return cartData;
+  const totalPrice = cartData.reduce((acc, item) => {
+    if (item.is_selected) {
+      return acc + item.product.selling_price * item.quantity;
+    }
+    return acc;
+  }, 0);
+
+  return { cartData, totalPrice };
 };
 
 export const removeFromCart = async ({
@@ -176,6 +183,7 @@ export const mergeCarts = async (cartData: ICartData[], userId: number) => {
       product_id: number;
       quantity: number;
       cart_id: number;
+      is_selected: boolean;
     }[] = [];
     for (const data of cartData) {
       const cart = await fetchOneCartProduct({
@@ -184,12 +192,14 @@ export const mergeCarts = async (cartData: ICartData[], userId: number) => {
       });
       if (cart) {
         cart.quantity += data.quantity;
+        cart.is_selected = data.is_selected;
         await cart.save({ transaction });
       } else {
         bulkData.push({
           product_id: data.productId,
           quantity: data.quantity,
           cart_id: cartId,
+          is_selected: data.is_selected,
         });
       }
     }
@@ -241,7 +251,7 @@ export const toggleSelection = async (userId: number, toggleType: boolean) => {
     });
   }
 
-  const abc = await updateCartProduct(
+  await updateCartProduct(
     { is_selected: toggleType },
     { where: { cart_id: cart.id } }
   );
