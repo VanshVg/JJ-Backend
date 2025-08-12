@@ -1,0 +1,260 @@
+import { fetchOneProduct } from "@/repositories/products.repository";
+import { IAddToCart, ICartData } from "./types";
+import { throwAppError } from "@/lib/helpers/error.helper";
+import { PRODUCTS_MESSAGES } from "../products/messages";
+import { createCart, fetchOneCart } from "@/repositories/carts.repository";
+import db from "@/database/models";
+import {
+  bulkCreateCartProducts,
+  createCartProduct,
+  deleteCartProduct,
+  fetchAllCartProducts,
+  fetchOneCartProduct,
+  updateCartProduct,
+} from "@/repositories/cart-products.repository";
+import { CART_MESSAGES } from "./messages";
+import Product from "@/database/models/products.model";
+import ProductImage from "@/database/models/product-images.model";
+
+export const addToCart = async ({
+  requestBody,
+  productId,
+  userId,
+}: IAddToCart) => {
+  const transaction = await db.transaction();
+
+  try {
+    const { quantity = 1 } = requestBody;
+
+    const product = await fetchOneProduct({
+      where: { id: productId },
+      attributes: ["id", "available_quantity"],
+    });
+    if (!product) {
+      throwAppError({
+        message: PRODUCTS_MESSAGES.PRODUCT_NOT_FOUND,
+        statusCode: 404,
+        toast: true,
+      });
+    }
+
+    const cart = await fetchOneCart({
+      where: { user_id: userId },
+      attributes: ["id"],
+    });
+    let cartId = cart?.id;
+    if (!cart) {
+      const newCart = await createCart({ user_id: userId }, { transaction });
+      cartId = newCart.id;
+    }
+
+    const cartProduct = await fetchOneCartProduct({
+      where: { cart_id: cartId, product_id: productId },
+      attributes: ["id", "quantity"],
+      transaction,
+    });
+    if (cartProduct) {
+      const newQuantity = cartProduct.quantity + quantity;
+      const updatedData = await updateCartProduct(
+        {
+          quantity:
+            newQuantity <= product.available_quantity
+              ? newQuantity
+              : product.available_quantity,
+        },
+        { where: { cart_id: cartId, product_id: productId } }
+      );
+      await transaction.commit();
+      return { ...updatedData[1][0] };
+    }
+
+    const newCartProduct = await createCartProduct(
+      {
+        cart_id: cartId,
+        product_id: productId,
+        quantity,
+      },
+      { transaction, raw: true }
+    );
+
+    await transaction.commit();
+    return newCartProduct;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+export const fetchCartData = async (userId: number) => {
+  const cart = await fetchOneCart({
+    where: { user_id: userId },
+    attributes: ["id"],
+  });
+  if (!cart) {
+    throwAppError({
+      message: CART_MESSAGES.CART_NOT_FOUND,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  const cartData = await fetchAllCartProducts({
+    where: { cart_id: cart.id },
+    attributes: ["id", "quantity", "is_selected"],
+    include: [
+      {
+        model: Product,
+        attributes: [
+          "id",
+          "name",
+          "brand",
+          "selling_price",
+          "available_quantity",
+        ],
+        include: [
+          {
+            model: ProductImage,
+            where: { is_primary: true },
+            attributes: ["id", "image_url"],
+          },
+        ],
+      },
+    ],
+    order: [["created_at", "DESC"]],
+  });
+
+  const totalPrice = cartData.reduce((acc, item) => {
+    if (item.is_selected) {
+      return acc + item.product.selling_price * item.quantity;
+    }
+    return acc;
+  }, 0);
+
+  return { cartData, totalPrice };
+};
+
+export const removeFromCart = async ({
+  userId,
+  productId,
+}: {
+  userId: number;
+  productId: number;
+}) => {
+  const cart = await fetchOneCart({
+    where: { user_id: userId },
+    attributes: ["id"],
+  });
+  if (!cart) {
+    throwAppError({
+      message: CART_MESSAGES.CART_NOT_FOUND,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  const cartProduct = await fetchOneCartProduct({
+    where: { cart_id: cart.id, product_id: productId },
+  });
+  if (!cartProduct) {
+    throwAppError({
+      message: CART_MESSAGES.PRODUCT_NOT_IN_CART,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  await deleteCartProduct({
+    where: { cart_id: cart.id, product_id: productId },
+  });
+
+  return;
+};
+
+export const mergeCarts = async (cartData: ICartData[], userId: number) => {
+  const transaction = await db.transaction();
+  try {
+    const userCart = await fetchOneCart({ where: { user_id: userId } });
+    let cartId = userCart?.id;
+    if (!userCart) {
+      const newCart = await createCart({ user_id: userId });
+      cartId = newCart.id;
+    }
+    const bulkData: {
+      product_id: number;
+      quantity: number;
+      cart_id: number;
+      is_selected: boolean;
+    }[] = [];
+    for (const data of cartData) {
+      const cart = await fetchOneCartProduct({
+        where: { product_id: data.productId, cart_id: cartId },
+        attributes: ["id"],
+      });
+      if (cart) {
+        cart.quantity += data.quantity;
+        cart.is_selected = data.is_selected;
+        await cart.save({ transaction });
+      } else {
+        bulkData.push({
+          product_id: data.productId,
+          quantity: data.quantity,
+          cart_id: cartId,
+          is_selected: data.is_selected,
+        });
+      }
+    }
+    if (bulkData.length > 0) {
+      await bulkCreateCartProducts(bulkData, { transaction });
+    }
+    await transaction.commit();
+    return;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+export const updateCart = async (
+  cartProductId: number,
+  cartData: { quantity: number; is_selected: boolean }
+) => {
+  const cartProduct = await fetchOneCartProduct({
+    where: { id: cartProductId },
+    attributes: ["id", "quantity", "is_selected"],
+  });
+  if (!cartProduct) {
+    throwAppError({
+      message: CART_MESSAGES.PRODUCT_NOT_IN_CART,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  cartProduct.quantity = cartData.quantity ?? cartProduct.quantity;
+  cartProduct.is_selected = cartData.is_selected ?? cartProduct.is_selected;
+
+  await cartProduct.save();
+
+  return null;
+};
+
+export const toggleSelection = async (userId: number, toggleType: boolean) => {
+  const cart = await fetchOneCart({
+    where: { user_id: userId },
+    attributes: ["id"],
+  });
+  if (!cart) {
+    throwAppError({
+      message: CART_MESSAGES.CART_NOT_FOUND,
+      statusCode: 404,
+      toast: false,
+    });
+  }
+
+  await updateCartProduct(
+    { is_selected: toggleType },
+    { where: { cart_id: cart.id } }
+  );
+
+  return null;
+};
