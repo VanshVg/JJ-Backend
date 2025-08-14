@@ -60,7 +60,7 @@ export const editUserAddress = async (
   try {
     const updatedData = await userServices.editUserAddress({
       bodyData: req.body,
-      userId: req.user.id,
+      addressId: Number(req.params.id),
     });
 
     return generalResponse({

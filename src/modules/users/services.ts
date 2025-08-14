@@ -49,14 +49,14 @@ export const addUserAddress = async ({
 
 export const editUserAddress = async ({
   bodyData,
-  userId,
+  addressId,
 }: {
   bodyData: IUserAddressBody;
-  userId: number;
+  addressId: number;
 }) => {
   const updatedData = await updateUserAddress(
     { ...bodyData },
-    { where: { id: userId } }
+    { where: { id: addressId } }
   );
 
   return updatedData;
