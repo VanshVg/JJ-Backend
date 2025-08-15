@@ -11,6 +11,7 @@ export const addUserAddressSchema = Joi.object({
     .allow(...Object.values(AddressType))
     .required(),
   pincode: joiCommon.joiNumber.label("Pincode"),
+  is_primary: joiCommon.joiBoolean.label("Primary Address").optional(),
 });
 
 export const editUserProfileSchema = Joi.object({
@@ -27,6 +28,7 @@ export const editUserAddressSchema = Joi.object({
     .label("Address type")
     .allow(...Object.values(AddressType)),
   pincode: joiCommon.joiNumber.label("Pincode"),
+  is_primary: joiCommon.joiBoolean.label("Primary Address").optional(),
 });
 
 export const changePasswordSchema = Joi.object({

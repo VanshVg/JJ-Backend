@@ -13,6 +13,7 @@ import { throwAppError } from "@/lib/helpers/error.helper";
 import { USERS_MESSAGES } from "./messages";
 import argon2 from "argon2";
 import User from "@/database/models/users.model";
+import db from "@/database/models";
 
 export const editUserProfile = async ({
   bodyData,
@@ -38,28 +39,63 @@ export const addUserAddress = async ({
   bodyData: IUserAddressBody;
   userId: number;
 }) => {
-  const newUserAddress = await createUserAddress({
-    ...bodyData,
-    pincode: 393001,
-    user_id: userId,
-  });
+  const transaction = await db.transaction();
+  try {
+    if (bodyData.is_primary) {
+      await updateUserAddress(
+        { is_primary: false },
+        { where: { user_id: userId }, transaction }
+      );
+    }
+    const newUserAddress = await createUserAddress(
+      {
+        ...bodyData,
+        pincode: 393001,
+        user_id: userId,
+      },
+      { transaction }
+    );
 
-  return newUserAddress;
+    await transaction.commit();
+
+    return newUserAddress;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };
 
 export const editUserAddress = async ({
   bodyData,
   addressId,
+  userId,
 }: {
   bodyData: IUserAddressBody;
   addressId: number;
+  userId: number;
 }) => {
-  const updatedData = await updateUserAddress(
-    { ...bodyData },
-    { where: { id: addressId } }
-  );
+  const transaction = await db.transaction();
 
-  return updatedData;
+  try {
+    if (bodyData.is_primary) {
+      await updateUserAddress(
+        { is_primary: false },
+        { where: { user_id: userId }, transaction }
+      );
+    }
+
+    const updatedData = await updateUserAddress(
+      { ...bodyData },
+      { where: { id: addressId }, transaction }
+    );
+
+    await transaction.commit();
+
+    return updatedData;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };
 
 export const fetchUserAddress = async (req: Request) => {
@@ -75,10 +111,12 @@ export const fetchUserAddress = async (req: Request) => {
         "landmark",
         "pincode",
         "address_type",
+        "is_primary",
       ],
       limit,
       offset,
       raw: true,
+      order: [["is_primary", "DESC"]],
     });
 
   return { addresses, totalRecords };

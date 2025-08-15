@@ -61,6 +61,7 @@ export const editUserAddress = async (
     const updatedData = await userServices.editUserAddress({
       bodyData: req.body,
       addressId: Number(req.params.id),
+      userId: req.user.id,
     });
 
     return generalResponse({
