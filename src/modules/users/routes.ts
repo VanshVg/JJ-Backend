@@ -32,7 +32,7 @@ const userRoutes = (): Router => {
     addUserAddress
   );
   userRouter.put(
-    "/users/address",
+    "/users/address/:id",
     authMiddleware,
     validationMiddleware(editUserAddressSchema),
     editUserAddress
