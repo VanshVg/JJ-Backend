@@ -90,16 +90,14 @@ export const fetchCartData = async (userId: number) => {
     where: { user_id: userId },
     attributes: ["id"],
   });
+  let cartId = cart?.id;
   if (!cart) {
-    throwAppError({
-      message: CART_MESSAGES.CART_NOT_FOUND,
-      statusCode: 404,
-      toast: false,
-    });
+    const newCart = await createCart({ user_id: userId });
+    cartId = newCart.id;
   }
 
   const cartData = await fetchAllCartProducts({
-    where: { cart_id: cart.id },
+    where: { cart_id: cartId },
     attributes: ["id", "quantity", "is_selected"],
     include: [
       {
