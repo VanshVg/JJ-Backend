@@ -18,6 +18,7 @@ import { ProductAttributes, WeightUnits } from "./types/products.type";
 import Category from "./categories.model";
 import ProductImage from "./product-images.model";
 import ProductReview from "./product-reviews.model";
+import CartProduct from "./cart-products.model";
 
 @Table({
   tableName: "products",
@@ -114,6 +115,9 @@ class Product extends Model<ProductAttributes> {
 
   @HasMany(() => ProductReview)
   productReviews: ProductReview[];
+
+  @HasMany(() => CartProduct)
+  cartProducts: CartProduct[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
