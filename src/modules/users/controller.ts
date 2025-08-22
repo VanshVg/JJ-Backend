@@ -145,3 +145,22 @@ export const changePassword = async (
     next(error);
   }
 };
+
+export const getAdminDashboard = async (
+  _,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return generalResponse({
+      response: res,
+      data: null,
+      message: USERS_MESSAGES.ADMIN_VALID,
+      statusCode: 200,
+      toast: true,
+      responseType: ResponseType.Success,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

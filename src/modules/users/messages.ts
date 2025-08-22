@@ -9,4 +9,5 @@ export const USERS_MESSAGES = Object.freeze({
   INVALID_PASSWORD: "Current password is invalid",
   PASSWORD_SUCCESS: "Updated password successfully",
   PASSWORD_SAME: "Use a different password",
+  ADMIN_VALID: "User is admin",
 });

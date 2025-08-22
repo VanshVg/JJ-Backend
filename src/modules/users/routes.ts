@@ -6,6 +6,7 @@ import {
   editUserAddress,
   editUserProfile,
   fetchUserAddresses,
+  getAdminDashboard,
   removeUserAddress,
 } from "./controller";
 import validationMiddleware from "@/middlewares/validation.middleware";
@@ -15,6 +16,8 @@ import {
   editUserAddressSchema,
   editUserProfileSchema,
 } from "./schema";
+import { checkRole } from "@/middlewares/role.middleware";
+import { UserRoles } from "@/database/models/types/users.type";
 
 const userRoutes = (): Router => {
   const userRouter = Router();
@@ -44,6 +47,12 @@ const userRoutes = (): Router => {
     authMiddleware,
     validationMiddleware(changePasswordSchema),
     changePassword
+  );
+  userRouter.get(
+    "/users/admin",
+    authMiddleware,
+    checkRole([UserRoles.Admin]),
+    getAdminDashboard
   );
 
   return userRouter;

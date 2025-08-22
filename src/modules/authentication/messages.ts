@@ -11,4 +11,5 @@ export const USER_MESSAGES = Object.freeze({
   OTP_SENT: "OTP sent successfully",
   RESET_PASSWORD_SUCCESS: "Password reset successful",
   NOT_AUTHENTICATED: "You're not authenticated to access this route",
+  FORBIDDEN: "User doesn't have a permission to access this route",
 });
