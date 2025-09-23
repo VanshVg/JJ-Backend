@@ -7,6 +7,7 @@ import {
   Default,
   DeletedAt,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -18,6 +19,7 @@ import {
 } from "./types/user-addresses.type";
 import { DataTypes } from "sequelize";
 import User from "./users.model";
+import Order from "./orders.model";
 
 @Table({
   tableName: "user_addresses",
@@ -72,6 +74,9 @@ class UserAddress extends Model<UserAddressAttributes> {
 
   @BelongsTo(() => User)
   user: User;
+
+  @HasMany(() => Order)
+  orders: Order[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
