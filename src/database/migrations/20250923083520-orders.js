@@ -60,11 +60,11 @@ module.exports = {
             type: Sequelize.DECIMAL,
             allowNull: false,
           },
-          tracking_id: {
-            type: Sequelize.TEXT,
-            unique: true,
-            allowNull: false,
-          },
+          // tracking_id: {
+          //   type: Sequelize.TEXT,
+          //   unique: true,
+          //   allowNull: false,
+          // },
 
           created_at: {
             type: Sequelize.DATE,

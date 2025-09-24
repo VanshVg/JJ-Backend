@@ -15,5 +15,4 @@ export interface OrderAttributes extends TimeStampAttributes {
   total_tax: number;
   extra_discount: number;
   final_amount: number;
-  tracking_id: string;
 }

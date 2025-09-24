@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express";
+
 export const isNumeric = (n: any) => {
   return n && !isNaN(parseFloat(n)) && isFinite(n);
 };
@@ -15,3 +17,10 @@ export const cleanObj = (obj: { [key: string]: any }) => {
   });
   return obj;
 };
+
+export const catchAsync =
+  (fn) => (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch((err) => {
+      next(err);
+    });
+  };

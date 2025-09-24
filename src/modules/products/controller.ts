@@ -3,37 +3,25 @@ import * as productServices from "./services";
 import { generalResponse } from "@/lib/helpers/response.helper";
 import { ResponseType } from "@/lib/types";
 import { PRODUCTS_MESSAGES } from "./messages";
+import { catchAsync } from "@/lib/utils";
 
-export const getProducts = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { products, totalRecords } = await productServices.getProductsService(
-      req
-    );
+export const getProducts = catchAsync(async (req: Request, res: Response) => {
+  const { products, totalRecords } = await productServices.getProductsService(
+    req
+  );
 
-    return generalResponse({
-      response: res,
-      data: { products, totalRecords },
-      message: PRODUCTS_MESSAGES.PRODUCTS_SUCCESS,
-      statusCode: 200,
-      toast: false,
-      responseType: ResponseType.Success,
-    });
-  } catch (error) {
-    console.log(`Error inside getProducts API`, error);
-    next(error);
-  }
-};
+  return generalResponse({
+    response: res,
+    data: { products, totalRecords },
+    message: PRODUCTS_MESSAGES.PRODUCTS_SUCCESS,
+    statusCode: 200,
+    toast: false,
+    responseType: ResponseType.Success,
+  });
+});
 
-export const getProductById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const getProductById = catchAsync(
+  async (req: Request, res: Response) => {
     const product = await productServices.getProductById(Number(req.params.id));
 
     return generalResponse({
@@ -44,17 +32,11 @@ export const getProductById = async (
       toast: false,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
-export const addProductReview = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const addProductReview = catchAsync(
+  async (req: Request, res: Response) => {
     const { id } = req.params;
     const { id: userId } = req.user;
 
@@ -71,7 +53,5 @@ export const addProductReview = async (
       toast: true,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);

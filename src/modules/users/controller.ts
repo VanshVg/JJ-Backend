@@ -4,13 +4,10 @@ import { generalResponse } from "@/lib/helpers/response.helper";
 import { USERS_MESSAGES } from "./messages";
 import { ResponseType } from "@/lib/types";
 import User from "@/database/models/users.model";
+import { catchAsync } from "@/lib/utils";
 
-export const editUserProfile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const editUserProfile = catchAsync(
+  async (req: Request, res: Response) => {
     const updatedData = await userServices.editUserProfile({
       bodyData: req.body,
       userId: req.user.id,
@@ -24,17 +21,11 @@ export const editUserProfile = async (
       toast: true,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
-export const addUserAddress = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const addUserAddress = catchAsync(
+  async (req: Request, res: Response) => {
     const userData = await userServices.addUserAddress({
       bodyData: req.body,
       userId: req.user.id,
@@ -47,17 +38,11 @@ export const addUserAddress = async (
       toast: true,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
-export const editUserAddress = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const editUserAddress = catchAsync(
+  async (req: Request, res: Response) => {
     const updatedData = await userServices.editUserAddress({
       bodyData: req.body,
       addressId: Number(req.params.id),
@@ -72,17 +57,11 @@ export const editUserAddress = async (
       toast: true,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
-export const fetchUserAddresses = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const fetchUserAddresses = catchAsync(
+  async (req: Request, res: Response) => {
     const responseData = await userServices.fetchUserAddress(req);
 
     return generalResponse({
@@ -93,17 +72,11 @@ export const fetchUserAddresses = async (
       toast: false,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
-export const removeUserAddress = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const removeUserAddress = catchAsync(
+  async (req: Request, res: Response) => {
     const responseData = await userServices.removeUserAddress(
       Number(req.params.id)
     );
@@ -116,17 +89,11 @@ export const removeUserAddress = async (
       toast: true,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);
 
-export const changePassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
+export const changePassword = catchAsync(
+  async (req: Request, res: Response) => {
     await userServices.changePassword({
       currentPassword: req.body.current_password,
       newPassword: req.body.new_password,
@@ -141,7 +108,5 @@ export const changePassword = async (
       toast: true,
       responseType: ResponseType.Success,
     });
-  } catch (error) {
-    next(error);
   }
-};
+);

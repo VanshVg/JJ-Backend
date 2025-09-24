@@ -37,7 +37,7 @@ class Order extends Model<OrderAttributes> {
   @AllowNull(false)
   @Default(OrderStatus.Ordered)
   @Column(DataTypes.ENUM(...Object.values(OrderStatus)))
-  role: OrderStatus;
+  status: OrderStatus;
 
   @ForeignKey(() => UserAddress)
   @AllowNull(false)
@@ -57,10 +57,6 @@ class Order extends Model<OrderAttributes> {
   @AllowNull(false)
   @Column(DataTypes.DECIMAL)
   final_amount: number;
-
-  @AllowNull(false)
-  @Column(DataTypes.TEXT)
-  tracking_id: string;
 
   @CreatedAt
   created_at: Date;
