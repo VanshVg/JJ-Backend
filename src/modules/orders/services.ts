@@ -8,6 +8,10 @@ import { OrderStatus, PaymentMethod } from "@/database/models/types/orders.type"
 import { throwAppError } from "@/lib/helpers/error.helper";
 import { getPagination } from "@/lib/helpers/pagination.helper";
 import {
+  sendOrderConfirmationSms,
+  sendAdminNewOrderSms,
+} from "@/lib/helpers/sms.helper";
+import {
   fetchAllCartProducts,
   deleteCartProduct,
 } from "@/repositories/cart-products.repository";
@@ -21,6 +25,7 @@ import {
 } from "@/repositories/orders.repository";
 import { fetchOneProduct } from "@/repositories/products.repository";
 import { fetchOneUserAddress } from "@/repositories/user-addresses.repository";
+import { fetchOneUser } from "@/repositories/users.repository";
 import { Request } from "express";
 import { IPlaceOrder } from "./types";
 import { ORDER_MESSAGES } from "./messages";
@@ -145,6 +150,16 @@ export const placeOrder = async (userId: number, data: IPlaceOrder) => {
     }
 
     await transaction.commit();
+
+    // Fire-and-forget SMS — never blocks the response
+    fetchOneUser({ where: { id: userId }, attributes: ["contact_no"] }).then(
+      (user) => {
+        if (user) {
+          sendOrderConfirmationSms(user.contact_no, order.id, totalAmount);
+          sendAdminNewOrderSms(order.id, totalAmount, user.contact_no);
+        }
+      }
+    );
 
     // Return order with items
     return fetchOneOrder({
