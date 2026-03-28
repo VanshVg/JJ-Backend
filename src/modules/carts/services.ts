@@ -186,7 +186,7 @@ export const mergeCarts = async (cartData: ICartData[], userId: number) => {
     for (const data of cartData) {
       const cart = await fetchOneCartProduct({
         where: { product_id: data.productId, cart_id: cartId },
-        attributes: ["id"],
+        attributes: ["id", "quantity"],
       });
       if (cart) {
         cart.quantity += data.quantity;

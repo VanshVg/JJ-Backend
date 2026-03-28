@@ -19,6 +19,7 @@ import Category from "./categories.model";
 import ProductImage from "./product-images.model";
 import ProductReview from "./product-reviews.model";
 import CartProduct from "./cart-products.model";
+import OrderItem from "./order-items.model";
 
 @Table({
   tableName: "products",
@@ -118,6 +119,9 @@ class Product extends Model<ProductAttributes> {
 
   @HasMany(() => CartProduct)
   cartProducts: CartProduct[];
+
+  @HasMany(() => OrderItem)
+  orderItems: OrderItem[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
