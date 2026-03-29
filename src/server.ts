@@ -5,6 +5,7 @@ import authRoutes from "./modules/authentication/routes";
 import cartRoutes from "./modules/carts/routes";
 import productRoutes from "./modules/products/routes";
 import userRoutes from "./modules/users/routes";
+import orderRoutes from "./modules/orders/routes";
 
 const main = async () => {
   try {
@@ -14,6 +15,7 @@ const main = async () => {
       productRoutes(),
       userRoutes(),
       cartRoutes(),
+      orderRoutes(),
     ];
 
     await initializeApp(apiRoutes, db);

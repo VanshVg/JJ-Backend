@@ -17,6 +17,7 @@ import { DataTypes } from "sequelize";
 import ProductReview from "./product-reviews.model";
 import UserAddress from "./user-addresses.model";
 import Cart from "./carts.model";
+import Order from "./orders.model";
 
 @Table({
   tableName: "users",
@@ -90,6 +91,9 @@ class User extends Model<UserAttributes> {
 
   @HasOne(() => Cart)
   cart: Cart;
+
+  @HasMany(() => Order)
+  orders: Order[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());

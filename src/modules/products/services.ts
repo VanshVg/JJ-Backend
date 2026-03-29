@@ -178,6 +178,8 @@ export const addProductReview = async ({
   await createProductReview({
     rating,
     review,
+    product_id: productId,
+    user_id: userId,
   });
 
   return null;

@@ -1,7 +1,8 @@
 import express, { Application, Router } from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 
-import { PORT } from "./config/env.config";
+import { FRONTEND_URL, PORT } from "./config/env.config";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { Sequelize } from "sequelize";
 import { logger } from "./config/logger.config";
@@ -11,10 +12,21 @@ const port: string | number = PORT || 8000;
 
 const app: Application = express();
 
+const otpRateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: { message: "Too many requests, please try again after a minute." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 const initializeMiddlewares = (app: Application) => {
-  app.use(cors());
+  app.use(cors({ origin: FRONTEND_URL || "http://localhost:5173" }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use("/auth/register", otpRateLimiter);
+  app.use("/auth/resend-otp", otpRateLimiter);
+  app.use("/auth/forgot-password", otpRateLimiter);
 };
 
 const initializeRoutes = (app: Application, routes: Router[]) => {
