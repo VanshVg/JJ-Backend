@@ -7,10 +7,7 @@ import UserAddress from "@/database/models/user-addresses.model";
 import { OrderStatus, PaymentMethod } from "@/database/models/types/orders.type";
 import { throwAppError } from "@/lib/helpers/error.helper";
 import { getPagination } from "@/lib/helpers/pagination.helper";
-import {
-  sendOrderConfirmationSms,
-  sendAdminNewOrderSms,
-} from "@/lib/helpers/sms.helper";
+import { sendAdminNewOrderWhatsApp } from "@/lib/helpers/whatsapp.helper";
 import {
   fetchAllCartProducts,
   deleteCartProduct,
@@ -155,8 +152,7 @@ export const placeOrder = async (userId: number, data: IPlaceOrder) => {
     fetchOneUser({ where: { id: userId }, attributes: ["contact_no"] }).then(
       (user) => {
         if (user) {
-          sendOrderConfirmationSms(user.contact_no, order.id, totalAmount);
-          sendAdminNewOrderSms(order.id, totalAmount, user.contact_no);
+          sendAdminNewOrderWhatsApp(order.id, totalAmount, user.contact_no);
         }
       }
     );
