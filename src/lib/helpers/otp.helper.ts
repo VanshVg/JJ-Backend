@@ -1,4 +1,5 @@
 import {
+  NODE_ENV,
   TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN,
   TWILIO_SERVICE_SID,
@@ -15,7 +16,21 @@ const client = twilioReady
   ? new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
   : null;
 
+// Never fall back to the fixed dev OTP in production, or anyone could log in
+// to any account with it.
+const assertOtpServiceAvailable = () => {
+  if (!twilioReady && NODE_ENV === "production") {
+    logger.error("[OTP] Twilio is not configured in production");
+    throwAppError({
+      message: "OTP service is unavailable. Please try again later!",
+      statusCode: 503,
+      toast: true,
+    });
+  }
+};
+
 export const sendOtpText = async (contactNo: string) => {
+  assertOtpServiceAvailable();
   if (!twilioReady) {
     logger.warn(
       `[OTP] Twilio not configured — dev mode active. Use OTP: ${DEV_OTP}`
@@ -34,6 +49,7 @@ export const sendOtpText = async (contactNo: string) => {
 };
 
 export const verifyOtp = async (contactNo: string, otp: string) => {
+  assertOtpServiceAvailable();
   if (!twilioReady) {
     if (otp !== DEV_OTP) {
       throwAppError({
@@ -42,7 +58,7 @@ export const verifyOtp = async (contactNo: string, otp: string) => {
         toast: true,
       });
     }
-    return { status: "approved" };
+    return { status: "approved", valid: true };
   }
 
   try {
