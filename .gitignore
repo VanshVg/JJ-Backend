@@ -12,5 +12,4 @@ pnpm-debug.log*
 lerna-debug.log*
 log
 # Vercel
-/public
 .vercel

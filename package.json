@@ -13,7 +13,7 @@
     "seed:product-images": "ts-node src/database/seeders/product-images.seeder.ts",
     "seed:product-reviews": "ts-node src/database/seeders/product-reviews.seeder.ts",
     "seeders": "npm run seed:categories && npm run seed:products && npm run seed:product-images && npm run seed:product-reviews",
-    "vercel-build": "npm run build && mkdir -p public"
+    "vercel-build": "npm run build"
   },
   "keywords": [],
   "author": "",
