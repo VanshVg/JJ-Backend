@@ -1,34 +1,19 @@
-import { initializeApp } from "./app";
+import { createApp } from "./app";
+import { PORT } from "./config/env.config";
 import { logger } from "./config/logger.config";
 import db from "./database/models";
-import authRoutes from "./modules/authentication/routes";
-import cartRoutes from "./modules/carts/routes";
-import productRoutes from "./modules/products/routes";
-import userRoutes from "./modules/users/routes";
-import orderRoutes from "./modules/orders/routes";
-import adminDashboardRoutes from "./modules/admin/dashboard/routes";
-import adminOrderRoutes from "./modules/admin/orders/routes";
-import adminProductRoutes from "./modules/admin/products/routes";
-import adminCustomerRoutes from "./modules/admin/customers/routes";
-import adminCategoryRoutes from "./modules/admin/categories/routes";
+import { getApiRoutes } from "./routes";
+
+const port: string | number = PORT || 8000;
 
 const main = async () => {
   try {
     await db.authenticate();
-    const apiRoutes = [
-      authRoutes(),
-      productRoutes(),
-      userRoutes(),
-      cartRoutes(),
-      orderRoutes(),
-      adminDashboardRoutes(),
-      adminOrderRoutes(),
-      adminProductRoutes(),
-      adminCustomerRoutes(),
-      adminCategoryRoutes(),
-    ];
+    const app = createApp(getApiRoutes());
 
-    await initializeApp(apiRoutes, db);
+    app.listen(port, () => {
+      logger.info(`🚀 App listening on port ${port}`);
+    });
   } catch (error) {
     logger.error("[SERVER START]: %s", error?.message);
     process.exit(1);

@@ -1,3 +1,5 @@
+import { waitUntil } from "@vercel/functions";
+import { logger } from "@/config/logger.config";
 import db from "@/database/models";
 import OrderItem from "@/database/models/order-items.model";
 import Order from "@/database/models/orders.model";
@@ -148,13 +150,22 @@ export const placeOrder = async (userId: number, data: IPlaceOrder) => {
 
     await transaction.commit();
 
-    // Fire-and-forget SMS — never blocks the response
-    fetchOneUser({ where: { id: userId }, attributes: ["contact_no"] }).then(
-      (user) => {
-        if (user) {
-          sendAdminNewOrderWhatsApp(order.id, totalAmount, user.contact_no);
-        }
-      }
+    // Admin WhatsApp alert — never blocks the response. waitUntil keeps a
+    // serverless function alive until it finishes (plain promise elsewhere).
+    waitUntil(
+      fetchOneUser({ where: { id: userId }, attributes: ["contact_no"] })
+        .then((user) => {
+          if (user) {
+            return sendAdminNewOrderWhatsApp(
+              order.id,
+              totalAmount,
+              user.contact_no
+            );
+          }
+        })
+        .catch((error) => {
+          logger.error("[WhatsApp] Order alert failed: %s", error?.message);
+        })
     );
 
     // Return order with items

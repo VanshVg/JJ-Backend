@@ -4,9 +4,13 @@ import { existsSync, mkdirSync } from "fs";
 import WinstonDaily from "winston-daily-rotate-file";
 import { LOG_DIR } from "./env.config";
 
-const logDir = join(process.cwd(), LOG_DIR);
+// Vercel's filesystem is read-only, so skip file logs there; console output
+// shows up in the Vercel dashboard's Logs tab instead.
+const useFileLogs = !process.env.VERCEL;
 
-if (!existsSync(logDir)) {
+const logDir = join(process.cwd(), LOG_DIR || "logs");
+
+if (useFileLogs && !existsSync(logDir)) {
   mkdirSync(logDir);
 }
 
@@ -31,27 +35,29 @@ export const consoleLogFormat = winston.format.combine(
 
 export const logger = winston.createLogger({
   format: fileLogFormat,
-  transports: [
-    new WinstonDaily({
-      level: "debug",
-      datePattern: "YYYY-MM-DD",
-      dirname: `${logDir}/debug`,
-      filename: "%DATE%.log",
-      maxFiles: 30,
-      json: false,
-      zippedArchive: true,
-    }),
-    new WinstonDaily({
-      level: "error",
-      datePattern: "YYYY-MM-DD",
-      dirname: `${logDir}/error`,
-      filename: "%DATE%.log",
-      maxFiles: 30,
-      handleExceptions: true,
-      json: false,
-      zippedArchive: true,
-    }),
-  ],
+  transports: useFileLogs
+    ? [
+        new WinstonDaily({
+          level: "debug",
+          datePattern: "YYYY-MM-DD",
+          dirname: `${logDir}/debug`,
+          filename: "%DATE%.log",
+          maxFiles: 30,
+          json: false,
+          zippedArchive: true,
+        }),
+        new WinstonDaily({
+          level: "error",
+          datePattern: "YYYY-MM-DD",
+          dirname: `${logDir}/error`,
+          filename: "%DATE%.log",
+          maxFiles: 30,
+          handleExceptions: true,
+          json: false,
+          zippedArchive: true,
+        }),
+      ]
+    : [],
 });
 
 logger.add(

@@ -2,15 +2,9 @@ import express, { Application, Router } from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 
-import { FRONTEND_URL, PORT } from "./config/env.config";
+import { FRONTEND_URL } from "./config/env.config";
 import { errorMiddleware } from "./middlewares/error.middleware";
-import { Sequelize } from "sequelize";
-import { logger } from "./config/logger.config";
 import { passportMiddleware } from "./middlewares/passport.middleware";
-
-const port: string | number = PORT || 8000;
-
-const app: Application = express();
 
 const otpRateLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -21,6 +15,9 @@ const otpRateLimiter = rateLimit({
 });
 
 const initializeMiddlewares = (app: Application) => {
+  // Behind Vercel's proxy — trust X-Forwarded-For so rate limiting sees the
+  // real client IP instead of the proxy's.
+  app.set("trust proxy", 1);
   app.use(cors({ origin: FRONTEND_URL || "http://localhost:5173" }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -30,6 +27,9 @@ const initializeMiddlewares = (app: Application) => {
 };
 
 const initializeRoutes = (app: Application, routes: Router[]) => {
+  app.get("/health", (_req, res) => {
+    res.json({ status: "ok" });
+  });
   routes.forEach((route) => {
     app.use("/", route);
   });
@@ -39,13 +39,13 @@ const initializeErrorHandling = (app: Application) => {
   app.use(errorMiddleware);
 };
 
-export const initializeApp = async (apiRouter: Router[], db: Sequelize) => {
+export const createApp = (apiRouter: Router[]): Application => {
+  const app: Application = express();
+
   initializeMiddlewares(app);
   initializeRoutes(app, apiRouter);
   initializeErrorHandling(app);
   passportMiddleware();
 
-  app.listen(port, () => {
-    logger.info(`🚀 App listening on port ${port}`);
-  });
+  return app;
 };

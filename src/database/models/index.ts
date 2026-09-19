@@ -1,7 +1,10 @@
-import { DATABASE_URL } from "@/config/env.config";
+import { DATABASE_URL, NODE_ENV } from "@/config/env.config";
 import fs from "fs";
 import path from "path";
+import pg from "pg";
 import { ModelCtor, Sequelize } from "sequelize-typescript";
+
+const isProduction = NODE_ENV === "production";
 
 let db: Sequelize;
 
@@ -9,7 +12,15 @@ export const initSequelize = () => {
   const _basename = path.basename(module.filename);
   const sequelize = new Sequelize(DATABASE_URL, {
     dialect: "postgres",
-    logging: true,
+    // Pass pg explicitly so serverless bundlers (Vercel) include it; Sequelize
+    // otherwise loads it with a dynamic require they can't trace.
+    dialectModule: pg,
+    dialectOptions: isProduction
+      ? { ssl: { require: true, rejectUnauthorized: false } }
+      : undefined,
+    // Each serverless instance holds its own pool, so keep it small.
+    pool: isProduction ? { max: 2, min: 0, idle: 10000 } : undefined,
+    logging: isProduction ? false : console.log,
   });
 
   const _models = fs
